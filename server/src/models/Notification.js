@@ -25,7 +25,8 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
+// Old notifications are automatically deleted after 30 days
+// so this collection doesn't grow forever.
 notificationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 30 * 24 * 60 * 60 });
 notificationSchema.index({ user: 1, isRead: 1, createdAt: -1 });
 

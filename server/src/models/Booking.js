@@ -18,7 +18,8 @@ const bookingSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-   
+    // We copy the price at the time of booking so that if the provider
+    // changes the service price later, old bookings are not affected.
     amount: {
       type: Number,
       required: true,

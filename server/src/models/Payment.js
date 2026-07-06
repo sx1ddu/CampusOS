@@ -8,7 +8,7 @@ const paymentSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    
+    // Either a booking or a rental booking is being paid for.
     bookingId: mongoose.Schema.Types.ObjectId,
     rentalId: mongoose.Schema.Types.ObjectId,
     razorpayOrderId: {

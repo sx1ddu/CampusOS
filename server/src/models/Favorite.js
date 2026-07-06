@@ -21,7 +21,7 @@ const favoriteSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
+// Stops a user from favoriting the same item twice.
 favoriteSchema.index({ user: 1, itemType: 1, itemId: 1 }, { unique: true });
 
 const Favorite = mongoose.model('Favorite', favoriteSchema);

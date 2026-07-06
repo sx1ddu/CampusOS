@@ -1,4 +1,7 @@
-export const HTTP_STATUS = Object.freeze({
+// Simple map of HTTP status codes we use often.
+// Using constants instead of raw numbers makes the code easier to read.
+
+export const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
   NO_CONTENT: 204,
@@ -7,7 +10,5 @@ export const HTTP_STATUS = Object.freeze({
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   CONFLICT: 409,
-  UNPROCESSABLE_ENTITY: 422,
-  INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503,
-});
+  SERVER_ERROR: 500,
+};

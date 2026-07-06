@@ -47,7 +47,7 @@ const rentalBookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
+// A quick check so a resource can't be double-booked for overlapping dates.
 rentalBookingSchema.statics.hasDateConflict = async function (resourceId, fromDate, toDate) {
   const conflict = await this.findOne({
     resource: resourceId,
