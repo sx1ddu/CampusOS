@@ -2,9 +2,7 @@ import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema(
   {
-    // Either bookingId or rentalId will be set, depending on reviewType.
-    // We don't use Mongoose's refPath here to keep things simple -
-    // the controller looks up the right collection based on reviewType.
+   
     reviewType: {
       type: String,
       enum: ['booking', 'rental'],

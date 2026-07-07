@@ -1,4 +1,4 @@
-// All the fixed string values used in the app live here.
+
 // Keeping them in one place avoids typos like "Pending" vs "pending"
 // scattered across different files.
 

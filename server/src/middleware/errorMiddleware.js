@@ -8,8 +8,7 @@ export const notFound = (req, res, next) => {
   next(error);
 };
 
-// This is the last middleware in the chain. Any error thrown or
-// passed to next(error) anywhere in the app ends up here.
+
 export const errorHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || HTTP_STATUS.SERVER_ERROR;
   let message = err.message || 'Something went wrong';

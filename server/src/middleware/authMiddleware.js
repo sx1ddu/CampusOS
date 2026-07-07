@@ -4,8 +4,7 @@ import ApiError from '../utils/ApiError.js';
 import { HTTP_STATUS } from '../constants/httpStatus.js';
 import User from '../models/User.js';
 
-// Checks that the request has a valid access token and attaches
-// the logged-in user to req.user so later controllers can use it.
+
 export const protect = asyncHandler(async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -31,8 +30,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   next();
 });
 
-// Restricts a route to specific roles, e.g. authorize('admin').
-// Must be used after `protect`, since it needs req.user.
+
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {

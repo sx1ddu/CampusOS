@@ -28,8 +28,7 @@ const profileSchema = new mongoose.Schema(
     },
     skills: [String],
     portfolioLinks: [String],
-    // Denormalized fields that get updated whenever a booking/review
-    // happens, so we don't need to recalculate them on every profile view.
+    
     reputationScore: {
       type: Number,
       default: 0,

@@ -39,8 +39,7 @@ const serviceSchema = new mongoose.Schema(
       enum: Object.values(SERVICE_STATUS),
       default: SERVICE_STATUS.ACTIVE,
     },
-    // Updated whenever a review comes in — avoids recalculating an
-    // average from every single review on every page load.
+   
     avgRating: {
       type: Number,
       default: 0,
@@ -61,7 +60,7 @@ const serviceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Supports keyword search on title/description and fast category browsing.
+
 serviceSchema.index({ title: 'text', description: 'text' });
 serviceSchema.index({ category: 1, status: 1 });
 serviceSchema.index({ provider: 1 });
