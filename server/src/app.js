@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'CampusOS API is running',
+    message: 'CampusOS API is running ✅',
     environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
   });
