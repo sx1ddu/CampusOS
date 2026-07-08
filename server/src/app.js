@@ -8,24 +8,48 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 const app = express();
 
 // Core middleware
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev')); // logs each request in the terminal, useful while developing
+  // Logs every request in the terminal while developing
+  app.use(morgan('dev'));
 }
 
-// Health check, so we can quickly confirm the server is up 
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to CampusOS API 🚀',
+    version: '1.0.0',
+    documentation: '/api/health',
+  });
+});
+
+// Health check
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'CampusOS API is running' });
+  res.status(200).json({
+    success: true,
+    message: 'CampusOS API is running',
+    environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // Main API routes
 app.use('/api', apiRoutes);
 
-// Error handling
+// 404 handler
 app.use(notFound);
+
+// Global error handler
 app.use(errorHandler);
 
 export default app;
