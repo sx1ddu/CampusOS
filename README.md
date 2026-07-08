@@ -161,7 +161,7 @@ npm install
 | `RAZORPAY_KEY_ID` | Razorpay key ID |
 | `RAZORPAY_KEY_SECRET` | Razorpay key secret |
 
-> ⚠️ Never commit your real `.env` file to GitHub.
+
 
 ---
 
