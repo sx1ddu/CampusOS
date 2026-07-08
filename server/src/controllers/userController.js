@@ -8,6 +8,7 @@ import { HTTP_STATUS } from '../constants/httpStatus.js';
 // @desc    Get the logged-in user's own profile
 // @route   GET /api/users/me
 export const getMyProfile = asyncHandler(async (req, res) => {
+  // populate() pulls in basic User fields alongside the Profile document.
   const profile = await Profile.findOne({ user: req.user._id }).populate('user', 'name email avatar role');
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'Profile fetched', profile));
 });
@@ -27,6 +28,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 export const updateMyProfile = asyncHandler(async (req, res) => {
   const { bio, college, department, year, skills, portfolioLinks } = req.body;
 
+  // Update the profile fields sent in the request body.
   const profile = await Profile.findOneAndUpdate(
     { user: req.user._id },
     { bio, college, department, year, skills, portfolioLinks },
@@ -43,6 +45,8 @@ export const updateAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'Please upload an image');
   }
 
+  // multer-storage-cloudinary already uploaded the file to Cloudinary -
+  // req.file.path is the returned image URL, so we just save it on the user.
   const user = await User.findByIdAndUpdate(req.user._id, { avatar: req.file.path }, { new: true });
 
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'Avatar updated', { avatar: user.avatar }));

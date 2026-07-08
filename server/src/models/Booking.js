@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { BOOKING_STATUS } from '../constants/enums.js';
 
+// Booking model - a client's request to book a provider's service.
 const bookingSchema = new mongoose.Schema(
   {
     service: {
@@ -19,6 +20,8 @@ const bookingSchema = new mongoose.Schema(
       required: true,
     },
     
+    // Copied from the service's price at booking time, so a later price
+    // change by the provider doesn't affect bookings that already happened.
     amount: {
       type: Number,
       required: true,
@@ -37,6 +40,7 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Indexes to speed up "my bookings" queries for both clients and providers.
 bookingSchema.index({ client: 1, status: 1 });
 bookingSchema.index({ provider: 1, status: 1 });
 

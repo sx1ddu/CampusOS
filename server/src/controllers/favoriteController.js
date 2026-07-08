@@ -9,6 +9,7 @@ import { HTTP_STATUS } from '../constants/httpStatus.js';
 export const addFavorite = asyncHandler(async (req, res) => {
   const { itemType, itemId } = req.body;
 
+  // Stop the same item being favorited twice by the same user.
   const alreadyExists = await Favorite.findOne({ user: req.user._id, itemType, itemId });
   if (alreadyExists) {
     throw new ApiError(HTTP_STATUS.CONFLICT, 'Already in your favorites');

@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// ReputationLog model - a simple history of reputation points a user
+// earned or lost, and why. Profile.reputationScore is the running total.
 const reputationLogSchema = new mongoose.Schema(
   {
     user: {

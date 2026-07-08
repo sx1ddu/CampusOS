@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { REPORT_TYPES, REPORT_STATUS } from '../constants/enums.js';
 
+// Report model - a user flagging a service, resource, or another user for review.
 const reportSchema = new mongoose.Schema(
   {
     reporter: {

@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 
+// Review model - a rating left after a completed booking or rental.
 const reviewSchema = new mongoose.Schema(
   {
    
+    // Tells us whether bookingId below refers to a Booking or a RentalBooking.
     reviewType: {
       type: String,
       enum: ['booking', 'rental'],
@@ -36,7 +38,7 @@ const reviewSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// One review per person per transaction — stops someone from
+// One review per person per transaction - stops someone from
 // submitting five 1-star reviews for the same booking.
 reviewSchema.index({ bookingId: 1, reviewer: 1 }, { unique: true });
 reviewSchema.index({ receiver: 1 });

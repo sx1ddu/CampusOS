@@ -22,6 +22,7 @@ export const createReport = asyncHandler(async (req, res) => {
 
 // @desc    Get all open reports (admin only)
 // @route   GET /api/reports
+// Note: the admin-only check happens in the route file via the authorize middleware.
 export const getReports = asyncHandler(async (req, res) => {
   const reports = await Report.find().populate('reporter', 'name email').sort('-createdAt');
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'Reports fetched', reports));

@@ -41,6 +41,7 @@ export const getResourceById = asyncHandler(async (req, res) => {
 // @route   POST /api/resources
 export const createResource = asyncHandler(async (req, res) => {
   const { title, description, category, rentPerDay, depositAmount } = req.body;
+  // Cloudinary upload already happened in the upload middleware - just grab the URLs.
   const images = req.files ? req.files.map((file) => file.path) : [];
 
   const resource = await Resource.create({
@@ -65,6 +66,7 @@ export const updateResource = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Resource not found');
   }
 
+  // Check if the logged-in user owns this resource before letting them edit it.
   if (resource.owner.toString() !== req.user._id.toString()) {
     throw new ApiError(HTTP_STATUS.FORBIDDEN, 'You can only edit your own resources');
   }
@@ -92,6 +94,7 @@ export const deleteResource = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.FORBIDDEN, 'You can only delete your own resources');
   }
 
+  // Soft delete - keep the record so past rentals still make sense, just hide it from browsing.
   resource.isDeleted = true;
   await resource.save();
 

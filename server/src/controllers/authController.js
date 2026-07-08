@@ -53,9 +53,11 @@ export const register = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.CONFLICT, 'An account with this email already exists');
   }
 
+  // Creating the user triggers the pre('save') hook in User.js that hashes the password.
   const user = await User.create({ name, email, password });
   await Profile.create({ user: user._id, college });
 
+  // Generate a verification token and email it to the user before they can log in.
   const verificationToken = user.generateEmailVerificationToken();
   await user.save({ validateBeforeSave: false });
 
@@ -75,6 +77,8 @@ export const register = asyncHandler(async (req, res) => {
 // @desc    Verify email using the token sent to the user's inbox
 // @route   GET /api/auth/verify-email/:token
 export const verifyEmail = asyncHandler(async (req, res) => {
+  // The email only contains the plain token, but the database stores its
+  // hash - so we hash the incoming token the same way before searching for it.
   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
 
   const user = await User.findOne({
@@ -99,6 +103,7 @@ export const verifyEmail = asyncHandler(async (req, res) => {
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // .select('+password') is needed because the schema hides password by default.
   const user = await User.findOne({ email }).select('+password');
   if (!user || !(await user.matchPassword(password))) {
     throw new ApiError(HTTP_STATUS.UNAUTHORIZED, 'Invalid email or password');
@@ -116,6 +121,7 @@ export const login = asyncHandler(async (req, res) => {
 export const googleLogin = asyncHandler(async (req, res) => {
   const { idToken } = req.body;
 
+  // Ask Google to confirm this ID token is real and read the user's info from it.
   const ticket = await googleClient.verifyIdToken({
     idToken,
     audience: process.env.GOOGLE_CLIENT_ID,
@@ -124,6 +130,7 @@ export const googleLogin = asyncHandler(async (req, res) => {
 
   let user = await User.findOne({ email: payload.email });
 
+  // First time logging in with this Google account - create a new user.
   if (!user) {
     user = await User.create({
       name: payload.name,
@@ -141,11 +148,13 @@ export const googleLogin = asyncHandler(async (req, res) => {
 // @desc    Get a new access token using the refresh token cookie
 // @route   POST /api/auth/refresh-token
 export const refreshAccessToken = asyncHandler(async (req, res) => {
+  // The refresh token travels as an httpOnly cookie, not in the request body.
   const incomingToken = req.cookies?.refreshToken;
   if (!incomingToken) {
     throw new ApiError(HTTP_STATUS.UNAUTHORIZED, 'No refresh token provided');
   }
 
+  // Check it matches what we stored at login time (so a logged-out/old token can't be reused).
   const user = await User.findOne({ refreshToken: incomingToken });
   if (!user) {
     throw new ApiError(HTTP_STATUS.UNAUTHORIZED, 'Invalid refresh token');
@@ -158,6 +167,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
 // @desc    Log out - clears the refresh token
 // @route   POST /api/auth/logout
 export const logout = asyncHandler(async (req, res) => {
+  // Clear the stored refresh token so it can no longer be used to get new access tokens.
   await User.findByIdAndUpdate(req.user._id, { refreshToken: null });
   res.clearCookie('refreshToken');
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'Logged out successfully'));
@@ -193,6 +203,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 // @desc    Reset password using the token from the email
 // @route   POST /api/auth/reset-password/:token
 export const resetPassword = asyncHandler(async (req, res) => {
+  // Same idea as verifyEmail - hash the incoming token before searching for it.
   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
 
   const user = await User.findOne({

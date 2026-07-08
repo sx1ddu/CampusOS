@@ -6,6 +6,7 @@ import { ROLES } from '../constants/enums.js';
 const router = express.Router();
 
 router.get('/', getCategories);
+// Only logged-in admins can create new categories.
 router.post('/', protect, authorize(ROLES.ADMIN), createCategory);
 
 export default router;

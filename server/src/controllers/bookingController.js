@@ -22,6 +22,8 @@ export const createBooking = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'You cannot book your own service');
   }
 
+  // Create a new booking request, copying the current price so it stays
+  // fixed even if the provider changes it later.
   const booking = await Booking.create({
     service: service._id,
     client: req.user._id,
@@ -38,6 +40,8 @@ export const createBooking = asyncHandler(async (req, res) => {
 // @desc    Get bookings for the logged-in user (as client or provider)
 // @route   GET /api/bookings/my?role=client|provider
 export const getMyBookings = asyncHandler(async (req, res) => {
+  // Same user can be either the client or the provider - the ?role query
+  // param decides which side of the booking we're looking up.
   const role = req.query.role === 'provider' ? 'provider' : 'client';
 
   const bookings = await Booking.find({ [role]: req.user._id })
@@ -59,6 +63,7 @@ export const updateBookingStatus = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Booking not found');
   }
 
+  // Check the logged-in user is actually part of this booking.
   const isProvider = booking.provider.toString() === req.user._id.toString();
   const isClient = booking.client.toString() === req.user._id.toString();
 
@@ -74,6 +79,7 @@ export const updateBookingStatus = asyncHandler(async (req, res) => {
   booking.status = status;
   await booking.save();
 
+  // Reward the provider with reputation points once a booking is completed.
   if (status === BOOKING_STATUS.COMPLETED) {
     await Service.findByIdAndUpdate(booking.service, { $inc: { totalBookings: 1 } });
     await addReputationPoints(booking.provider, 10, 'Completed a booking');

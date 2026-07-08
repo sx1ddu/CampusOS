@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 
-// Connects to MongoDB using the URI from our .env file.
-// If the connection fails, we log the error and stop the server
-// because there's no point running the API without a database.
+// Connect to MongoDB using the URI from .env.
+// Exit the process if the connection fails - the API is useless without a database.
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);

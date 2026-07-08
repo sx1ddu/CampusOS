@@ -14,13 +14,17 @@ import { HTTP_STATUS } from '../constants/httpStatus.js';
 export const createOrder = asyncHandler(async (req, res) => {
   const { bookingId, rentalId } = req.body;
 
+  // Only one of bookingId/rentalId is expected - look up whichever was sent.
   const transaction = bookingId ? await Booking.findById(bookingId) : await RentalBooking.findById(rentalId);
   if (!transaction) {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Booking not found');
   }
 
+  // Ask Razorpay to create an order for this amount - the frontend uses
+  // this order ID to open the Razorpay checkout popup.
   const order = await createRazorpayOrder(transaction.amount);
 
+  // Keep our own record of this payment attempt so we can verify it later.
   const payment = await Payment.create({
     user: req.user._id,
     bookingId,
@@ -39,6 +43,8 @@ export const createOrder = asyncHandler(async (req, res) => {
 export const verifyPayment = asyncHandler(async (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
+  // Recreate the signature ourselves and compare it - this proves the
+  // payment really came from Razorpay and wasn't faked by the client.
   const isValid = verifyRazorpaySignature({
     orderId: razorpay_order_id,
     paymentId: razorpay_payment_id,
@@ -49,6 +55,7 @@ export const verifyPayment = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'Payment verification failed');
   }
 
+  // Signature is valid - update our payment record to PAID.
   const payment = await Payment.findOneAndUpdate(
     { razorpayOrderId: razorpay_order_id },
     { razorpayPaymentId: razorpay_payment_id, status: PAYMENT_STATUS.PAID },

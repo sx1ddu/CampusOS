@@ -1,4 +1,5 @@
-
+// Wraps every successful response in the same shape:
+// { success, statusCode, message, data }. Keeps API responses consistent.
 class ApiResponse {
   constructor(statusCode, message, data = null) {
     this.success = statusCode < 400;

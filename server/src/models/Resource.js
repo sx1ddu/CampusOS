@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+// Resource model - a physical item a student lists for rent (e.g. calculator, camera).
 const resourceSchema = new mongoose.Schema(
   {
     title: {
@@ -35,6 +36,8 @@ const resourceSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    // Soft delete - hide the resource instead of removing it, since old
+    // rentals still need to reference it.
     isDeleted: {
       type: Boolean,
       default: false,
@@ -43,6 +46,7 @@ const resourceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Indexes for search, category browsing, and "my resources" queries.
 resourceSchema.index({ title: 'text', description: 'text' });
 resourceSchema.index({ category: 1, isAvailable: 1 });
 resourceSchema.index({ owner: 1 });

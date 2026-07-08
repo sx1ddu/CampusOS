@@ -4,6 +4,7 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+// Both routes require login - you must be signed in to pay for anything.
 router.post('/create-order', protect, createOrder);
 router.post('/verify', protect, verifyPayment);
 

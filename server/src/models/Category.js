@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// Category model - groups services (e.g. "Tutoring") and resources
+// (e.g. "Electronics") so listings can be filtered by category.
 const categorySchema = new mongoose.Schema({
   name: {
     type: String,

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { PAYMENT_STATUS } from '../constants/enums.js';
 
+// Payment model - tracks Razorpay payment attempts for bookings and rentals.
 const paymentSchema = new mongoose.Schema(
   {
     user: {
@@ -9,6 +10,7 @@ const paymentSchema = new mongoose.Schema(
       required: true,
     },
     
+    // Only one of these two will be set, depending on what is being paid for.
     bookingId: mongoose.Schema.Types.ObjectId,
     rentalId: mongoose.Schema.Types.ObjectId,
     razorpayOrderId: {

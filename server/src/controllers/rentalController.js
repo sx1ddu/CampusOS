@@ -21,11 +21,13 @@ export const createRental = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'You cannot rent your own resource');
   }
 
+  // Make sure no one else already has this resource booked for these dates.
   const hasConflict = await RentalBooking.hasDateConflict(resourceId, new Date(fromDate), new Date(toDate));
   if (hasConflict) {
     throw new ApiError(HTTP_STATUS.CONFLICT, 'This resource is already booked for those dates');
   }
 
+  // Work out the total rent based on number of days.
   const days = Math.ceil((new Date(toDate) - new Date(fromDate)) / (1000 * 60 * 60 * 24));
   const amount = days * resource.rentPerDay;
 
@@ -66,6 +68,7 @@ export const updateRentalStatus = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Rental not found');
   }
 
+  // Only the resource owner can approve, reject, or mark a rental returned.
   const isOwner = rental.owner.toString() === req.user._id.toString();
   if (!isOwner) {
     throw new ApiError(HTTP_STATUS.FORBIDDEN, 'Only the resource owner can update this');
@@ -74,6 +77,7 @@ export const updateRentalStatus = asyncHandler(async (req, res) => {
   rental.status = status;
   await rental.save();
 
+  // Once the item is returned, make it available for the next renter again.
   if (status === RENTAL_STATUS.RETURNED) {
     await Resource.findByIdAndUpdate(rental.resource, { isAvailable: true });
   }

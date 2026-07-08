@@ -9,6 +9,8 @@ export const notFound = (req, res, next) => {
 };
 
 
+// Central error handler - every thrown error or next(error) call in the
+// app ends up here. Converts common Mongoose errors into clean messages.
 export const errorHandler = (err, req, res, next) => {
   let statusCode = err.statusCode || HTTP_STATUS.SERVER_ERROR;
   let message = err.message || 'Something went wrong';

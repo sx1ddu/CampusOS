@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+// Profile model - extra student details that don't belong in the User
+// model (bio, skills, reputation). Linked to User with a one-to-one relation.
 const profileSchema = new mongoose.Schema(
   {
     user: {
@@ -29,6 +31,8 @@ const profileSchema = new mongoose.Schema(
     skills: [String],
     portfolioLinks: [String],
     
+    // These fields are updated whenever a booking/review happens, so we
+    // don't have to recalculate them from scratch on every profile view.
     reputationScore: {
       type: Number,
       default: 0,
@@ -45,10 +49,13 @@ const profileSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Virtual field - not stored in MongoDB, calculated on the fly whenever the
+// profile is read, to tell the frontend if the user still needs to fill in details.
 profileSchema.virtual('isProfileComplete').get(function () {
   return Boolean(this.bio && this.college && this.skills?.length > 0);
 });
 
+// Include virtuals when this document is converted to JSON (e.g. in API responses).
 profileSchema.set('toJSON', { virtuals: true });
 
 const Profile = mongoose.model('Profile', profileSchema);

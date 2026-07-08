@@ -15,6 +15,7 @@ import { HTTP_STATUS } from '../constants/httpStatus.js';
 export const createReview = asyncHandler(async (req, res) => {
   const { reviewType, bookingId, rating, comment } = req.body;
 
+  // reviewType tells us whether bookingId points to a Booking or a RentalBooking.
   const Model = reviewType === 'rental' ? RentalBooking : Booking;
   const transaction = await Model.findById(bookingId);
 
@@ -22,6 +23,7 @@ export const createReview = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Booking not found');
   }
 
+  // Only completed transactions can be reviewed.
   const isCompleted = ['completed', 'returned'].includes(transaction.status);
   if (!isCompleted) {
     throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'You can only review completed bookings');
@@ -47,7 +49,7 @@ export const createReview = asyncHandler(async (req, res) => {
     comment,
   });
 
-  // Update the receiver's average rating on their profile.
+  // Recalculate the receiver's average rating and save it on their profile.
   const profile = await Profile.findOne({ user: receiver });
   if (profile) {
     const reviewCount = await Review.countDocuments({ receiver });
@@ -57,10 +59,11 @@ export const createReview = asyncHandler(async (req, res) => {
     await profile.save();
   }
 
-  // If this was a service booking, also update the service's rating.
+  // If this was a service booking, also update the service's own rating.
   if (reviewType !== 'rental') {
     const service = await Service.findById(transaction.service);
     if (service) {
+      // Running average formula: new average = (old total + new rating) / new count.
       const newTotal = service.totalReviews + 1;
       const newAvg = (service.avgRating * service.totalReviews + rating) / newTotal;
       service.avgRating = Math.round(newAvg * 10) / 10;

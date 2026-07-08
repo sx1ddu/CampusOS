@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { RENTAL_STATUS } from '../constants/enums.js';
 
+// RentalBooking model - a single rental transaction on a Resource
+// (like Booking, but for physical items instead of services).
 const rentalBookingSchema = new mongoose.Schema(
   {
     resource: {
@@ -47,7 +49,8 @@ const rentalBookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
+// Checks if a resource is already booked for an overlapping date range,
+// so we don't double-book the same item to two different renters.
 rentalBookingSchema.statics.hasDateConflict = async function (resourceId, fromDate, toDate) {
   const conflict = await this.findOne({
     resource: resourceId,

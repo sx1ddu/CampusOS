@@ -15,6 +15,8 @@ import { validateRequest } from '../middleware/validateMiddleware.js';
 
 const router = express.Router();
 
+// express-validator rules run first, then validateRequest checks the result
+// before the request even reaches the controller.
 router.post(
   '/register',
   [
@@ -37,6 +39,7 @@ router.post(
 
 router.post('/google', googleLogin);
 router.post('/refresh-token', refreshAccessToken);
+// protect middleware runs first - only a logged-in user can log out.
 router.post('/logout', protect, logout);
 router.post('/forgot-password', body('email').isEmail(), validateRequest, forgotPassword);
 router.post(

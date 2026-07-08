@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { SERVICE_STATUS } from '../constants/enums.js';
 
+// Service model - a skill/gig a student offers on the marketplace
+// (e.g. "React tutoring", "resume review").
 const serviceSchema = new mongoose.Schema(
   {
     title: {
@@ -40,6 +42,8 @@ const serviceSchema = new mongoose.Schema(
       default: SERVICE_STATUS.ACTIVE,
     },
    
+    // Updated whenever a booking/review happens, so we don't have to
+    // recalculate the average rating from every review on each page load.
     avgRating: {
       type: Number,
       default: 0,
@@ -52,6 +56,8 @@ const serviceSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    // Soft delete - hide the service instead of removing it, since old
+    // bookings still need to reference it.
     isDeleted: {
       type: Boolean,
       default: false,
@@ -60,7 +66,7 @@ const serviceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
+// Indexes to make search, category browsing, and "my services" queries faster.
 serviceSchema.index({ title: 'text', description: 'text' });
 serviceSchema.index({ category: 1, status: 1 });
 serviceSchema.index({ provider: 1 });

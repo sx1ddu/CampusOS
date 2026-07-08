@@ -14,6 +14,8 @@ import paymentRoutes from './paymentRoutes.js';
 
 const router = express.Router();
 
+// Mount each feature's routes under its own path prefix.
+// e.g. requests to /api/services are handled by serviceRoutes.js
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/categories', categoryRoutes);

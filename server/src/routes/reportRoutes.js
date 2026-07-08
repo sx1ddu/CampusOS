@@ -6,6 +6,7 @@ import { ROLES } from '../constants/enums.js';
 const router = express.Router();
 
 router.post('/', protect, createReport);
+// authorize(ROLES.ADMIN) runs after protect - only logged-in admins can view/resolve reports.
 router.get('/', protect, authorize(ROLES.ADMIN), getReports);
 router.put('/:id/resolve', protect, authorize(ROLES.ADMIN), resolveReport);
 
