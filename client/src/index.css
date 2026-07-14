@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/*
+  Design tokens for CampusOS.
+  Tailwind v4 lets us define custom colors/fonts right here in CSS
+  using @theme, instead of a separate tailwind.config.js file.
+  Once defined, these become usable as Tailwind classes automatically,
+  e.g. --color-background becomes `bg-background`.
+*/
+@theme {
+  --color-background: #faf7f1;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f3eee4;
+  --color-text-primary: #211e1b;
+  --color-text-secondary: #6b6459;
+  --color-border: #e6dfd1;
+
+  --color-sage: #8a9a82;
+  --color-sage-dark: #71805f;
+  --color-taupe: #c9b8a0;
+  --color-mauve: #a99cae;
+
+  --color-charcoal: #211e1b;
+  --color-charcoal-dark: #131110;
+
+  --color-success: #6b8f5e;
+  --color-warning: #c08a3e;
+  --color-error: #b5514a;
+
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* Base page styles - applied once, globally, instead of repeating on every page */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Visible keyboard focus ring on every interactive element - accessibility requirement */
+:focus-visible {
+  outline: 2px solid var(--color-sage-dark);
+  outline-offset: 2px;
+}
