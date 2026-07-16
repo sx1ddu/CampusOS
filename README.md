@@ -1,268 +1,458 @@
-# 🎓 CampusOS Backend
+# 🎓 CampusOS
 
-A backend REST API for a campus marketplace where students can offer services, rent out items to each other, book and pay for things, and build a reputation on their campus.
+> A full-stack campus marketplace that enables students to offer services, rent resources, book campus essentials, make secure payments, and build their reputation within their college community.
 
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-4.19-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-8.4-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![JWT](https://img.shields.io/badge/Auth-JWT-000000?style=flat-square)](https://jwt.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](#license)
+<p align="center">
 
----
+![CampusOS Banner](./client/public/logo.svg)
 
-## 🚀 Live Demo
+</p>
 
-The backend is deployed and live on Render.
+<p align="center">
 
-**Backend API:** [https://campusos-39xt.onrender.com](https://campusos-39xt.onrender.com)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4-38BDF8?style=for-the-badge&logo=tailwindcss)
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)
+![Express](https://img.shields.io/badge/Express-4-black?style=for-the-badge&logo=express)
+![MongoDB](https://img.shields.io/badge/MongoDB-8-47A248?style=for-the-badge&logo=mongodb)
 
-**Health Check:** [https://campusos-39xt.onrender.com/api/health](https://campusos-39xt.onrender.com/api/health)
-
-You can test all the API routes using Postman by sending requests to the live URL above. Note: since this is hosted on Render's free tier, the first request after some time may take 30-50 seconds to respond while the server wakes up.
-
----
-
-## 📌 About the Project
-
-CampusOS is a marketplace built only for students. Instead of using random WhatsApp groups or Facebook posts to find help or rent items on campus, students can use CampusOS to:
-
-- Offer a skill as a paid service (like tutoring, design, or resume review)
-- Rent out an item they own (like a calculator, camera, or book)
-- Book a service or rent an item from another student
-- Pay securely using Razorpay
-- Leave a review after the booking is done
-- Build a reputation score based on completed bookings and reviews
-
-This project was built to practice real backend development skills such as authentication, file uploads, payments, and working with MongoDB relationships, using a project structure similar to what real companies use.
+</p>
 
 ---
 
-## ✨ Features
+# 🌐 Live Demo
 
-**Authentication**
-- Register and login with email + password
-- Email verification link sent using Nodemailer
-- Login with Google (Google OAuth)
-- JWT access token + refresh token
-- Forgot password and reset password via email
+### Frontend
+
+https://campus-kn9stfwmz-siidduuss.vercel.app/
+
+### Backend API
+
+https://campusos-39xt.onrender.com
+
+### Health Check
+
+https://campusos-39xt.onrender.com/api/health
+
+> **Note**
+>
+> The backend is hosted on Render's free tier, so the first request after inactivity may take **30–50 seconds** while the server wakes up.
+
+---
+
+# 📖 About the Project
+
+CampusOS is a **full-stack MERN application** built exclusively for college students.
+
+Instead of relying on WhatsApp groups or social media to buy, sell, rent, or find services, CampusOS provides a dedicated campus marketplace where students can safely connect with each other.
+
+Students can:
+
+- Offer skills as paid services
+- Rent out personal resources
+- Book services from other students
+- Pay securely
+- Leave reviews
+- Build reputation
+- Save favourites
+- Receive notifications
+- Report inappropriate listings
+
+The objective of this project was to learn how real-world MERN applications are structured while following good backend and frontend development practices.
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication
+
+- Email & Password Login
+- Google OAuth Login
+- JWT Authentication
+- Refresh Tokens
+- Email Verification
+- Forgot Password
+- Reset Password
 - Logout
 
-**Profile**
-- View and update your profile (bio, college, skills, etc.)
-- Upload a profile picture (stored on Cloudinary)
-- View another user's public profile
+---
 
-**Service Marketplace**
-- Create, update, and delete a service listing
-- Upload images for a service
-- Search and filter services by category and price
-- View your own listed services
+## 👤 User Profiles
 
-**Resource Rental**
-- List an item for rent
-- Search and filter items by category
-- Prevents double-booking the same item for the same dates
-
-**Bookings & Rentals**
-- Request to book a service or rent an item
-- Accept / reject / complete a booking
-- Approve / mark a rental as returned
-
-**Payments**
-- Create a Razorpay order for a booking or rental
-- Verify payment using Razorpay's signature check
-
-**Reviews & Reputation**
-- Leave a rating and comment after a completed booking
-- Average rating is updated automatically
-- Reputation points are tracked for each user
-
-**Other Features**
-- Favorites (save a service/resource for later)
-- Report a service, resource, or user
-- Admin-only routes to view and resolve reports
-- In-app notifications (auto-deleted after 30 days)
-- Role-based access (student / admin)
-- Centralized error handling and consistent API responses
+- Profile setup
+- Edit profile
+- Upload profile picture
+- Public profile pages
+- Reputation system
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠 Service Marketplace
 
-| Category | Technology |
-|---|---|
-| Backend | Node.js, Express.js |
-| Database | MongoDB, Mongoose |
-| Authentication | JWT, Google OAuth, bcrypt |
-| Payments | Razorpay |
-| File Storage | Cloudinary + Multer |
-| Email | Nodemailer |
-| Validation | express-validator |
-| Deployment | Render |
+- Create services
+- Edit services
+- Delete services
+- Category filtering
+- Search
+- Price filtering
+- Service images
+
+Examples:
+
+- Tutoring
+- Resume Review
+- Graphic Design
+- Programming Help
 
 ---
 
-## 📂 Folder Structure
+## 📦 Resource Marketplace
+
+Students can rent:
+
+- Books
+- Calculators
+- Cameras
+- Electronics
+- Lab Equipment
+
+Features include:
+
+- Resource listing
+- Availability
+- Booking protection
+- Double booking prevention
+
+---
+
+## 📅 Booking System
+
+- Book services
+- Book rental resources
+- Accept bookings
+- Reject bookings
+- Complete bookings
+- Return rented resources
+
+---
+
+## 💳 Payments
+
+Integrated with Razorpay.
+
+- Create payment orders
+- Verify payments
+- Secure payment flow
+
+---
+
+## ⭐ Reviews & Reputation
+
+- Rate completed bookings
+- Leave reviews
+- Reputation score
+- Average ratings
+
+---
+
+## ❤️ Favorites
+
+Users can save:
+
+- Services
+- Resources
+
+---
+
+## 🔔 Notifications
+
+- Booking updates
+- Payment updates
+- Review notifications
+- Automatic cleanup of old notifications
+
+---
+
+## 🛡 Admin Features
+
+- View reports
+- Resolve reports
+- Manage categories
+- Role-based authorization
+
+---
+
+# 🖥 Frontend
+
+The frontend is built using modern React development practices.
+
+### Technologies
+
+- React 19
+- Vite
+- Tailwind CSS
+- React Router
+- React Query
+- Axios
+- React Hook Form
+- Zod
+- Lucide Icons
+
+### Frontend Features
+
+- Responsive Design
+- Modern Landing Page
+- Authentication Pages
+- Dashboard
+- Protected Routes
+- Search & Filters
+- Loading States
+- Error Handling
+- Reusable Components
+- Clean UI
+- Toast Notifications
+
+---
+
+# ⚙ Backend
+
+### Technologies
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- Google OAuth
+- Nodemailer
+- Cloudinary
+- Multer
+- Razorpay
+
+---
+
+# 🛠 Tech Stack
+
+| Frontend | Backend | Database | Other |
+|-----------|----------|-----------|--------|
+| React | Node.js | MongoDB | JWT |
+| Vite | Express | Mongoose | Google OAuth |
+| Tailwind CSS | REST API | MongoDB Atlas | Razorpay |
+| React Query | Multer | | Cloudinary |
+| Axios | Nodemailer | | Render |
+| React Hook Form | Express Validator | | Vercel |
+
+---
+
+# 📂 Project Structure
 
 ```
-src/
-├── config/          # MongoDB and Cloudinary setup
-├── constants/       # Fixed values like roles, statuses, HTTP codes
-├── models/          # Mongoose schemas (User, Service, Booking, etc.)
-├── middleware/      # Auth check, error handler, file upload, validation
-├── controllers/     # Business logic for each feature
-├── routes/          # API endpoints, mapped to controllers
-├── services/        # Helper logic (email, payment, reputation)
-├── utils/           # Small reusable helpers (ApiError, ApiResponse, etc.)
-├── seed/            # Script to fill the database with demo data
-├── app.js           # Express app setup (middleware + routes)
-└── server.js         # Starts the server after connecting to MongoDB
+CampusOS
+│
+├── client
+│   ├── public
+│   ├── src
+│   │   ├── api
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── constants
+│   │   ├── context
+│   │   ├── hooks
+│   │   ├── layouts
+│   │   ├── pages
+│   │   ├── routes
+│   │   ├── utils
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+│
+├── server
+│   ├── src
+│   │   ├── config
+│   │   ├── constants
+│   │   ├── controllers
+│   │   ├── middleware
+│   │   ├── models
+│   │   ├── routes
+│   │   ├── services
+│   │   ├── utils
+│   │   └── server.js
+│   └── package.json
+│
+└── README.md
 ```
 
 ---
 
-## ⚙️ Installation Steps
+# 🚀 Installation
 
-**1. Clone the repository**
+## Clone Repository
+
 ```bash
-git clone https://github.com/sx1ddu/CampusOS
+git clone https://github.com/sx1ddu/CampusOS.git
+cd CampusOS
+```
+
+---
+
+## Backend
+
+```bash
 cd server
-```
-
-**2. Install dependencies**
-```bash
 npm install
 ```
 
-**3. Create a `.env` file** in the root folder and add the environment variables listed below.
+Create
 
----
+```
+.env
+```
 
-## 🔑 Environment Variables
-
-| Variable | Description |
-|---|---|
-| `NODE_ENV` | `development` or `production` |
-| `PORT` | Port number for the server |
-| `MONGO_URI` | Your MongoDB connection string |
-| `CLIENT_URL` | Frontend URL (used for CORS and email links) |
-| `JWT_ACCESS_SECRET` | Secret key for signing access tokens |
-| `JWT_ACCESS_EXPIRY` | Access token expiry (e.g. `15m`) |
-| `JWT_REFRESH_SECRET` | Secret key for signing refresh tokens |
-| `JWT_REFRESH_EXPIRY` | Refresh token expiry (e.g. `7d`) |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
-| `EMAIL_HOST` | SMTP host for sending emails |
-| `EMAIL_PORT` | SMTP port |
-| `EMAIL_USER` | Email account used to send emails |
-| `EMAIL_PASS` | Email account password / app password |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name |
-| `CLOUDINARY_API_KEY` | Cloudinary API key |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
-| `RAZORPAY_KEY_ID` | Razorpay key ID |
-| `RAZORPAY_KEY_SECRET` | Razorpay key secret |
-
-
-
----
-
-## ▶️ Running the Project Locally
-
-Make sure MongoDB is running (locally or using a free MongoDB Atlas cluster), then start the server:
+Start server
 
 ```bash
 npm run dev
 ```
 
-The server will start at `http://localhost:5000` (or the port you set). You can check if it's working by opening:
-
-```
-http://localhost:5000/api/health
-```
-
 ---
 
-## 🌱 Database Seeding
-
-To quickly fill your database with demo data (users, categories, services, and resources), run:
+## Frontend
 
 ```bash
-npm run seed
+cd client
+npm install
 ```
 
-This creates 20 demo student accounts (all using the same password, shown in the terminal after seeding), along with sample service and resource listings, so you have data to test with right away.
+Create
+
+```
+.env
+```
+
+Run
+
+```bash
+npm run dev
+```
 
 ---
 
-## 🔗 API Overview
+# 🔑 Environment Variables
 
-All routes are prefixed with `/api`. Below are the main route groups (not every single endpoint):
+## Backend
 
-| Route Group | What it does |
-|---|---|
-| `/api/auth` | Register, login, Google login, email verification, refresh token, logout, forgot/reset password |
-| `/api/users` | View/update profile, upload avatar |
-| `/api/categories` | View categories, create category (admin only) |
-| `/api/services` | Browse, search, create, update, delete service listings |
-| `/api/bookings` | Book a service, view your bookings, update booking status |
-| `/api/resources` | Browse, search, create, update, delete rental items |
-| `/api/rentals` | Rent a resource, view your rentals, update rental status |
-| `/api/reviews` | Leave a review, view reviews for a user |
-| `/api/favorites` | Add, view, remove favorites |
-| `/api/reports` | Report an item/user, view/resolve reports (admin only) |
-| `/api/notifications` | View notifications, mark as read |
-| `/api/payments` | Create a payment order, verify payment |
+```
+PORT=
 
----
+MONGO_URI=
 
-## ☁️ Deployment
+CLIENT_URL=
 
-This backend is deployed on **[Render](https://render.com/)** as a web service.
+JWT_ACCESS_SECRET=
+JWT_REFRESH_SECRET=
 
-- Build command: `npm install`
-- Start command: `npm start`
-- MongoDB is hosted on **MongoDB Atlas** (a free cloud database)
-- All environment variables are added in Render's dashboard under **Environment**
+GOOGLE_CLIENT_ID=
 
-🔗 **Live Backend:** [https://campusos-39xt.onrender.com](https://campusos-39xt.onrender.com)
+EMAIL_HOST=
+EMAIL_PORT=
+EMAIL_USER=
+EMAIL_PASS=
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+```
 
 ---
 
-## 🧪 Testing with Postman
+## Frontend
 
-You can test every route using **Postman**:
-
-1. Open Postman and create a new request.
-2. Use the live URL (`https://campusos-39xt.onrender.com/api/...`) or your local URL (`http://localhost:5000/api/...`).
-3. For protected routes, log in first using `/api/auth/login` to get an `accessToken`, then add it to the request header:
-   ```
-   Authorization: Bearer <your_access_token>
-   ```
-4. For routes that need image uploads (like creating a service), use Postman's `form-data` body type instead of JSON.
-5. Start with `GET /api/health` to make sure the server is reachable before testing other routes.
+```
+VITE_API_BASE_URL=
+VITE_GOOGLE_CLIENT_ID=
+```
 
 ---
 
-## 🔮 Future Improvements
+# 📡 API Modules
 
-- Real-time chat between students using Socket.IO
-- Rate limiting on login/register to prevent brute-force attempts
-- Redis caching for frequently viewed data
-- Better search using a dedicated search engine
-- Admin dashboard with basic analytics
+- Authentication
+- Users
+- Categories
+- Services
+- Resources
+- Bookings
+- Rentals
+- Payments
+- Reviews
+- Favorites
+- Notifications
+- Reports
 
 ---
 
-## 👨‍💻 Author
+# 🧪 Testing
+
+Backend APIs were tested using **Postman**.
+
+Frontend was tested by integrating with the deployed backend.
+
+---
+
+# 🎯 Learning Outcomes
+
+This project helped me learn:
+
+- REST API Development
+- Authentication using JWT
+- Google OAuth
+- MongoDB Relationships
+- MERN Architecture
+- React Hooks
+- React Query
+- Protected Routes
+- State Management
+- File Uploads
+- Cloudinary Integration
+- Payment Integration
+- API Design
+- Deployment using Vercel & Render
+
+---
+
+# 🚀 Future Improvements
+
+- Real-time Chat
+- Socket.IO Notifications
+- Recommendation System
+- AI Search
+- Admin Analytics Dashboard
+- Mobile Application
+- Dark Mode
+- Advanced Search Filters
+
+---
+
+# 👨‍💻 Author
 
 **Siddharth**
+
 Computer Science Undergraduate
 
-- GitHub: [sx1ddu](https://github.com/sx1ddu)
-- LinkedIn: [siddharth-kandela-257384333](https://linkedin.com/in/siddharth-kandela-257384333)
-- 
+**GitHub**
+
+https://github.com/sx1ddu
+
+**LinkedIn**
+
+https://linkedin.com/in/siddharth-kandela-257384333
 
 ---
 
-## 📄 License
+# 📄 License
 
 This project is licensed under the MIT License.
