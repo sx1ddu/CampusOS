@@ -15,6 +15,12 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 // cookie (safer, JS on the frontend can't read it) and access token
 // in the JSON body (the frontend keeps it in memory and sends it in
 // the Authorization header on every request).
+const cookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+});
+
 const sendTokens = async (user, statusCode, res, message) => {
   const accessToken = generateAccessToken(user._id);
   const refreshToken = generateRefreshToken(user._id);
@@ -23,9 +29,7 @@ const sendTokens = async (user, statusCode, res, message) => {
   await user.save({ validateBeforeSave: false });
 
   res.cookie('refreshToken', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    ...cookieOptions(),
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
@@ -168,8 +172,8 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
 // @route   POST /api/auth/logout
 export const logout = asyncHandler(async (req, res) => {
   // Clear the stored refresh token so it can no longer be used to get new access tokens.
-  await User.findByIdAndUpdate(req.user._id, { refreshToken: null });
-  res.clearCookie('refreshToken');
+  await User.findByIdAndUpdate(req.user._id, { $set: { refreshToken: null } });
+  res.clearCookie('refreshToken', cookieOptions());
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'Logged out successfully'));
 });
 

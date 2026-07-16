@@ -14,10 +14,23 @@ import { HTTP_STATUS } from '../constants/httpStatus.js';
 export const createOrder = asyncHandler(async (req, res) => {
   const { bookingId, rentalId } = req.body;
 
+  if (!bookingId && !rentalId) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'Provide either bookingId or rentalId');
+  }
+  if (bookingId && rentalId) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'Provide only one of bookingId or rentalId, not both');
+  }
+
   // Only one of bookingId/rentalId is expected - look up whichever was sent.
   const transaction = bookingId ? await Booking.findById(bookingId) : await RentalBooking.findById(rentalId);
   if (!transaction) {
-    throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Booking not found');
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Booking or rental not found');
+  }
+
+  // Only the client/renter who actually made this booking should be able to pay for it.
+  const payerId = bookingId ? transaction.client : transaction.renter;
+  if (payerId.toString() !== req.user._id.toString()) {
+    throw new ApiError(HTTP_STATUS.FORBIDDEN, 'You can only pay for your own bookings');
   }
 
   // Ask Razorpay to create an order for this amount - the frontend uses
@@ -55,22 +68,28 @@ export const verifyPayment = asyncHandler(async (req, res) => {
     throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'Payment verification failed');
   }
 
-  // Signature is valid - update our payment record to PAID.
-  const payment = await Payment.findOneAndUpdate(
-    { razorpayOrderId: razorpay_order_id },
-    { razorpayPaymentId: razorpay_payment_id, status: PAYMENT_STATUS.PAID },
-    { new: true }
-  );
-
-  if (!payment) {
+  const existingPayment = await Payment.findOne({ razorpayOrderId: razorpay_order_id });
+  if (!existingPayment) {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Payment record not found');
   }
 
+  // Only the person who created this payment order should be able to confirm it.
+  if (existingPayment.user.toString() !== req.user._id.toString()) {
+    throw new ApiError(HTTP_STATUS.FORBIDDEN, 'This payment does not belong to you');
+  }
+
+  // Signature is valid - update our payment record to PAID.
+  const payment = await Payment.findOneAndUpdate(
+    { razorpayOrderId: razorpay_order_id },
+    { $set: { razorpayPaymentId: razorpay_payment_id, status: PAYMENT_STATUS.PAID } },
+    { new: true }
+  );
+
   // Mark the related booking/rental as paid.
   if (payment.bookingId) {
-    await Booking.findByIdAndUpdate(payment.bookingId, { isPaid: true });
+    await Booking.findByIdAndUpdate(payment.bookingId, { $set: { isPaid: true } });
   } else if (payment.rentalId) {
-    await RentalBooking.findByIdAndUpdate(payment.rentalId, { isPaid: true });
+    await RentalBooking.findByIdAndUpdate(payment.rentalId, { $set: { isPaid: true } });
   }
 
   await notifyUser(req.user._id, NOTIFICATION_TYPES.PAYMENT_SUCCESS, 'Your payment was successful');

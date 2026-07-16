@@ -9,6 +9,9 @@ import { EmptyState } from '../../components/ui/EmptyState'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { RoleTabs } from '../../components/ui/RoleTabs'
 import { rentalApi } from '../../api/rentalApi'
+import { paymentApi } from '../../api/paymentApi'
+import { openRazorpayCheckout } from '../../utils/razorpay'
+import { useAuth } from '../../hooks/useAuth'
 import { formatCurrency } from '../../utils/formatCurrency'
 import { formatDate } from '../../utils/formatDate'
 import { RENTAL_STATUS, STATUS_BADGE_VARIANT } from '../../constants/enums'
@@ -20,7 +23,9 @@ const tabs = [
 
 export function MyRentalsPage() {
   const [role, setRole] = useState('renter')
+  const [payingId, setPayingId] = useState(null)
   const queryClient = useQueryClient()
+  const { user } = useAuth()
 
   const { data, isLoading } = useQuery({
     queryKey: ['myRentals', role],
@@ -35,6 +40,34 @@ export function MyRentalsPage() {
     },
     onError: (error) => toast.error(error.response?.data?.message || 'Could not update rental'),
   })
+
+  async function handlePay(rental) {
+    setPayingId(rental._id)
+    try {
+      const { data: orderRes } = await paymentApi.createOrder({ rentalId: rental._id })
+      const { order } = orderRes.data
+
+      const paymentResult = await openRazorpayCheckout({
+        order,
+        name: 'CampusOS',
+        description: rental.resource?.title,
+        prefill: { name: user?.name, email: user?.email },
+      })
+
+      await paymentApi.verifyPayment({
+        razorpay_order_id: paymentResult.razorpay_order_id,
+        razorpay_payment_id: paymentResult.razorpay_payment_id,
+        razorpay_signature: paymentResult.razorpay_signature,
+      })
+
+      toast.success('Payment successful')
+      queryClient.invalidateQueries({ queryKey: ['myRentals'] })
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message || 'Payment failed')
+    } finally {
+      setPayingId(null)
+    }
+  }
 
   const rentals = data?.data?.data || []
 
@@ -81,6 +114,11 @@ export function MyRentalsPage() {
               {role === 'owner' && rental.status === RENTAL_STATUS.APPROVED && (
                 <Button size="sm" onClick={() => statusMutation.mutate({ id: rental._id, status: RENTAL_STATUS.RETURNED })}>
                   Mark Returned
+                </Button>
+              )}
+              {role === 'renter' && rental.status === RENTAL_STATUS.APPROVED && !rental.isPaid && (
+                <Button size="sm" onClick={() => handlePay(rental)} isLoading={payingId === rental._id}>
+                  Pay Now
                 </Button>
               )}
             </div>

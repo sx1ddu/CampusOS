@@ -31,7 +31,7 @@ export const updateMyProfile = asyncHandler(async (req, res) => {
   // Update the profile fields sent in the request body.
   const profile = await Profile.findOneAndUpdate(
     { user: req.user._id },
-    { bio, college, department, year, skills, portfolioLinks },
+    { $set: { bio, college, department, year, skills, portfolioLinks } },
     { new: true, runValidators: true }
   );
 
@@ -47,7 +47,7 @@ export const updateAvatar = asyncHandler(async (req, res) => {
 
   // multer-storage-cloudinary already uploaded the file to Cloudinary -
   // req.file.path is the returned image URL, so we just save it on the user.
-  const user = await User.findByIdAndUpdate(req.user._id, { avatar: req.file.path }, { new: true });
+  const user = await User.findByIdAndUpdate(req.user._id, { $set: { avatar: req.file.path } }, { new: true });
 
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'Avatar updated', { avatar: user.avatar }));
 });

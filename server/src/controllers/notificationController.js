@@ -13,13 +13,13 @@ export const getMyNotifications = asyncHandler(async (req, res) => {
 // @desc    Mark one notification as read
 // @route   PUT /api/notifications/:id/read
 export const markAsRead = asyncHandler(async (req, res) => {
-  await Notification.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { isRead: true });
+  await Notification.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { $set: { isRead: true } });
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'Marked as read'));
 });
 
 // @desc    Mark all notifications as read
 // @route   PUT /api/notifications/read-all
 export const markAllAsRead = asyncHandler(async (req, res) => {
-  await Notification.updateMany({ user: req.user._id, isRead: false }, { isRead: true });
+  await Notification.updateMany({ user: req.user._id, isRead: false }, { $set: { isRead: true } });
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'All notifications marked as read'));
 });

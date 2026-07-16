@@ -5,7 +5,7 @@ import ApiResponse from '../utils/ApiResponse.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import { notifyUser } from '../services/notificationService.js';
 import { addReputationPoints } from '../services/reputationService.js';
-import { BOOKING_STATUS, NOTIFICATION_TYPES } from '../constants/enums.js';
+import { BOOKING_STATUS, SERVICE_STATUS, NOTIFICATION_TYPES } from '../constants/enums.js';
 import { HTTP_STATUS } from '../constants/httpStatus.js';
 
 // @desc    Request a booking for a service
@@ -13,9 +13,9 @@ import { HTTP_STATUS } from '../constants/httpStatus.js';
 export const createBooking = asyncHandler(async (req, res) => {
   const { serviceId, scheduledDate } = req.body;
 
-  const service = await Service.findOne({ _id: serviceId, isDeleted: false });
+  const service = await Service.findOne({ _id: serviceId, isDeleted: false, status: SERVICE_STATUS.ACTIVE });
   if (!service) {
-    throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Service not found');
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Service not found or not available for booking');
   }
 
   if (service.provider.toString() === req.user._id.toString()) {

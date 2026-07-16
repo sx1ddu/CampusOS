@@ -12,6 +12,13 @@ import { HTTP_STATUS } from '../constants/httpStatus.js';
 export const createRental = asyncHandler(async (req, res) => {
   const { resourceId, fromDate, toDate } = req.body;
 
+  const from = new Date(fromDate);
+  const to = new Date(toDate);
+
+  if (to <= from) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'toDate must be after fromDate');
+  }
+
   const resource = await Resource.findOne({ _id: resourceId, isDeleted: false });
   if (!resource) {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Resource not found');
@@ -22,21 +29,21 @@ export const createRental = asyncHandler(async (req, res) => {
   }
 
   // Make sure no one else already has this resource booked for these dates.
-  const hasConflict = await RentalBooking.hasDateConflict(resourceId, new Date(fromDate), new Date(toDate));
+  const hasConflict = await RentalBooking.hasDateConflict(resourceId, from, to);
   if (hasConflict) {
     throw new ApiError(HTTP_STATUS.CONFLICT, 'This resource is already booked for those dates');
   }
 
   // Work out the total rent based on number of days.
-  const days = Math.ceil((new Date(toDate) - new Date(fromDate)) / (1000 * 60 * 60 * 24));
+  const days = Math.ceil((to - from) / (1000 * 60 * 60 * 24));
   const amount = days * resource.rentPerDay;
 
   const rental = await RentalBooking.create({
     resource: resource._id,
     renter: req.user._id,
     owner: resource.owner,
-    fromDate,
-    toDate,
+    fromDate: from,
+    toDate: to,
     amount,
     depositAmount: resource.depositAmount,
   });
@@ -79,7 +86,7 @@ export const updateRentalStatus = asyncHandler(async (req, res) => {
 
   // Once the item is returned, make it available for the next renter again.
   if (status === RENTAL_STATUS.RETURNED) {
-    await Resource.findByIdAndUpdate(rental.resource, { isAvailable: true });
+    await Resource.findByIdAndUpdate(rental.resource, { $set: { isAvailable: true } });
   }
 
   await notifyUser(rental.renter, NOTIFICATION_TYPES.RENTAL_UPDATE, `Your rental status changed to "${status}"`);

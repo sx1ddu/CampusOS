@@ -8,7 +8,7 @@ import { BOOKING_STATUS, STATUS_BADGE_VARIANT } from '../../constants/enums'
 // Shown on the My Bookings page. `viewAs` tells us whether the current
 // user is the client or the provider, since that changes which action
 // buttons make sense (only a provider can accept/reject/complete).
-export function BookingCard({ booking, viewAs, onUpdateStatus, isUpdating }) {
+export function BookingCard({ booking, viewAs, onUpdateStatus, isUpdating, onPay, isPaying }) {
   const otherParty = viewAs === 'client' ? booking.provider : booking.client
 
   return (
@@ -43,6 +43,11 @@ export function BookingCard({ booking, viewAs, onUpdateStatus, isUpdating }) {
         {viewAs === 'provider' && booking.status === BOOKING_STATUS.ACCEPTED && (
           <Button size="sm" onClick={() => onUpdateStatus(booking._id, BOOKING_STATUS.COMPLETED)} isLoading={isUpdating}>
             Mark Completed
+          </Button>
+        )}
+        {viewAs === 'client' && booking.status === BOOKING_STATUS.ACCEPTED && !booking.isPaid && (
+          <Button size="sm" onClick={onPay} isLoading={isPaying}>
+            Pay Now
           </Button>
         )}
       </div>

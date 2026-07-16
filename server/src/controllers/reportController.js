@@ -31,7 +31,7 @@ export const getReports = asyncHandler(async (req, res) => {
 // @desc    Mark a report as resolved (admin only)
 // @route   PUT /api/reports/:id/resolve
 export const resolveReport = asyncHandler(async (req, res) => {
-  const report = await Report.findByIdAndUpdate(req.params.id, { status: REPORT_STATUS.RESOLVED }, { new: true });
+  const report = await Report.findByIdAndUpdate(req.params.id, { $set: { status: REPORT_STATUS.RESOLVED } }, { new: true });
 
   if (!report) {
     throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Report not found');
