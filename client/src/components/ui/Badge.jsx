@@ -5,13 +5,13 @@ const variantStyles = {
   warning: 'bg-warning/10 text-warning',
   error: 'bg-error/10 text-error',
   neutral: 'bg-surface-alt text-text-secondary',
-  sage: 'bg-sage/10 text-sage-dark',
+  sage: 'bg-text-primary/[0.06] text-text-primary',
 }
 
 export function Badge({ children, variant = 'neutral', className = '' }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium capitalize
+      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium capitalize tracking-wide
         ${variantStyles[variant]} ${className}`}
     >
       {children}

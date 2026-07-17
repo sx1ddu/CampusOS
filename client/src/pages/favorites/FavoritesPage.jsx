@@ -27,7 +27,7 @@ export function FavoritesPage() {
 
   return (
     <div>
-      <h1 className="font-heading text-xl font-bold text-text-primary">Favorites</h1>
+      <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Favorites</h1>
 
       <div className="mt-6 space-y-3">
         {isLoading && Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-16" />)}

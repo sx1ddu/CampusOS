@@ -68,7 +68,7 @@ export function MyBookingsPage() {
 
   return (
     <div>
-      <h1 className="font-heading text-xl font-bold text-text-primary">My Bookings</h1>
+      <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">My Bookings</h1>
 
       <div className="mt-4">
         <RoleTabs tabs={tabs} active={role} onChange={setRole} />

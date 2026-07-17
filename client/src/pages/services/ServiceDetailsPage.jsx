@@ -71,14 +71,14 @@ export function ServiceDetailsPage() {
   const reviews = reviewsData?.data?.data || []
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-12">
-      <div className="aspect-video overflow-hidden rounded-xl bg-surface-alt">
+    <div className="mx-auto max-w-4xl px-6 py-16">
+      <div className="aspect-video overflow-hidden rounded-2xl bg-surface-alt">
         {service.images?.[0] && <img src={service.images[0]} alt={service.title} className="h-full w-full object-cover" />}
       </div>
 
       <div className="mt-6 flex items-start justify-between">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-text-primary">{service.title}</h1>
+          <h1 className="font-heading text-3xl font-semibold tracking-tight text-text-primary">{service.title}</h1>
           <div className="mt-2 flex items-center gap-3 text-sm text-text-secondary">
             <Avatar src={service.provider?.avatar} name={service.provider?.name} size={22} />
             {service.provider?.name}
@@ -105,13 +105,13 @@ export function ServiceDetailsPage() {
         <Clock size={15} /> Delivery in {service.deliveryTimeDays} day{service.deliveryTimeDays > 1 ? 's' : ''}
       </div>
 
-      <div className="mt-6 flex items-center justify-between rounded-xl border border-border bg-surface p-5">
-        <span className="font-heading text-2xl font-bold text-text-primary">{formatCurrency(service.price)}</span>
+      <div className="mt-6 flex items-center justify-between rounded-2xl border border-border bg-surface p-5">
+        <span className="font-heading text-3xl font-semibold tracking-tight text-text-primary">{formatCurrency(service.price)}</span>
         {user?._id !== service.provider?._id && <Button onClick={() => setBookingOpen(true)}>Book Now</Button>}
       </div>
 
       <div className="mt-10">
-        <h2 className="font-heading text-lg font-semibold text-text-primary">Reviews</h2>
+        <h2 className="font-heading text-xl font-semibold tracking-tight text-text-primary">Reviews</h2>
         <div className="mt-4 space-y-3">
           {reviews.length === 0 && <p className="text-sm text-text-secondary">No reviews yet.</p>}
           {reviews.map((review) => <ReviewCard key={review._id} review={review} />)}

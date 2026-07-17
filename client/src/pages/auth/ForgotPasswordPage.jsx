@@ -25,7 +25,7 @@ export function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="text-center">
-        <h1 className="font-heading text-xl font-bold text-text-primary">Check your email</h1>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Check your email</h1>
         <p className="mt-2 text-sm text-text-secondary">
           If an account exists for that email, we&apos;ve sent a password reset link.
         </p>
@@ -35,7 +35,7 @@ export function ForgotPasswordPage() {
 
   return (
     <div>
-      <h1 className="font-heading text-xl font-bold text-text-primary">Forgot your password?</h1>
+      <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Forgot your password?</h1>
       <p className="mt-1 text-sm text-text-secondary">Enter your email and we&apos;ll send you a reset link.</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">

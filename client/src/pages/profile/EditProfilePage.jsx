@@ -52,8 +52,8 @@ export function EditProfilePage() {
   if (isLoading) return <Spinner className="py-24" size={32} />
 
   return (
-    <div className="mx-auto max-w-lg px-6 py-12">
-      <h1 className="font-heading text-2xl font-bold text-text-primary">Edit Profile</h1>
+    <div className="mx-auto max-w-lg px-6 py-16">
+      <h1 className="font-heading text-3xl font-semibold tracking-tight text-text-primary">Edit Profile</h1>
       <form onSubmit={handleSubmit(mutation.mutate)} className="mt-6 space-y-4">
         <Textarea label="Bio" {...register('bio')} error={errors.bio?.message} />
         <Input label="College" {...register('college')} error={errors.college?.message} />

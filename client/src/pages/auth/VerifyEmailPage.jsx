@@ -37,7 +37,7 @@ export function VerifyEmailPage() {
     return (
       <div className="text-center">
         <CheckCircle2 className="mx-auto text-success" size={40} />
-        <h1 className="mt-3 font-heading text-lg font-bold text-text-primary">Email verified!</h1>
+        <h1 className="mt-3 font-heading text-xl font-semibold tracking-tight text-text-primary">Email verified!</h1>
         <p className="mt-1 text-sm text-text-secondary">You can now log in to your account.</p>
         <Link to="/login" className="mt-4 inline-block text-sm font-medium text-sage-dark hover:underline">
           Go to login
@@ -49,7 +49,7 @@ export function VerifyEmailPage() {
   return (
     <div className="text-center">
       <XCircle className="mx-auto text-error" size={40} />
-      <h1 className="mt-3 font-heading text-lg font-bold text-text-primary">Verification failed</h1>
+      <h1 className="mt-3 font-heading text-xl font-semibold tracking-tight text-text-primary">Verification failed</h1>
       <p className="mt-1 text-sm text-text-secondary">This link may be invalid or expired.</p>
     </div>
   )

@@ -37,7 +37,7 @@ export function MyServicesPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-heading text-xl font-bold text-text-primary">My Services</h1>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">My Services</h1>
         <Link to="/services/new">
           <Button size="sm">
             <Plus size={16} /> New Service

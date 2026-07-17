@@ -28,7 +28,7 @@ export function Sidebar() {
   const { user } = useAuth()
 
   return (
-    <aside className="hidden w-60 shrink-0 border-r border-border bg-surface px-4 py-8 md:block">
+    <aside className="hidden w-64 shrink-0 border-r border-border px-4 py-10 md:block">
       <nav className="flex flex-col gap-1">
         {dashboardLinks.map(({ to, label, icon: Icon, end }) => (
           <NavLink
@@ -36,8 +36,10 @@ export function Sidebar() {
             to={to}
             end={end}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive ? 'bg-sage/15 text-sage-dark' : 'text-text-secondary hover:bg-surface-alt hover:text-text-primary'
+              `flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                isActive
+                  ? 'bg-charcoal text-white'
+                  : 'text-text-secondary hover:bg-surface-alt hover:text-text-primary'
               }`
             }
           >
@@ -50,8 +52,8 @@ export function Sidebar() {
           <NavLink
             to="/admin"
             className={({ isActive }) =>
-              `mt-4 flex items-center gap-3 rounded-lg border-t border-border px-3 pt-4 text-sm font-medium transition-colors ${
-                isActive ? 'text-sage-dark' : 'text-text-secondary hover:text-text-primary'
+              `mt-4 flex items-center gap-3 rounded-xl border-t border-border px-3.5 pt-5 text-sm font-medium transition-colors duration-150 ${
+                isActive ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
               }`
             }
           >

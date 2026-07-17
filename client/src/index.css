@@ -1,34 +1,39 @@
 @import "tailwindcss";
 
-/*
-  Design tokens for CampusOS.
-  Tailwind v4 lets us define custom colors/fonts right here in CSS
-  using @theme, instead of a separate tailwind.config.js file.
-  Once defined, these become usable as Tailwind classes automatically,
-  e.g. --color-background becomes `bg-background`.
-*/
+
 @theme {
-  --color-background: #faf7f1;
+ 
+  --color-background: #fbfbfd;
   --color-surface: #ffffff;
-  --color-surface-alt: #f3eee4;
-  --color-text-primary: #211e1b;
-  --color-text-secondary: #6b6459;
-  --color-border: #e6dfd1;
+  --color-surface-alt: #f5f5f7;
+  --color-text-primary: #1d1d1f;
+  --color-text-secondary: #6e6e73;
+  --color-border: #e5e5e7;
 
-  --color-sage: #8a9a82;
-  --color-sage-dark: #71805f;
-  --color-taupe: #c9b8a0;
-  --color-mauve: #a99cae;
 
-  --color-charcoal: #211e1b;
-  --color-charcoal-dark: #131110;
+  --color-sage: #6e6e73;
+  --color-sage-dark: #1d1d1f;
+  --color-taupe: #86868b;
+  --color-mauve: #86868b;
 
-  --color-success: #6b8f5e;
-  --color-warning: #c08a3e;
-  --color-error: #b5514a;
+  /* Primary black used for buttons, nav, and high-emphasis surfaces */
+  --color-charcoal: #1d1d1f;
+  --color-charcoal-dark: #000000;
 
-  --font-heading: "Plus Jakarta Sans", sans-serif;
-  --font-body: "Inter", sans-serif;
+  /* Muted, desaturated status colors - only used for booking/rental/
+     payment status badges, never as decoration. */
+  --color-success: #2a7a4b;
+  --color-warning: #b8860b;
+  --color-error: #c0392b;
+
+  --font-heading: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
+
+  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.02);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-lifted: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 /* Base page styles - applied once, globally, instead of repeating on every page */
@@ -36,14 +41,37 @@ body {
   font-family: var(--font-body);
   background-color: var(--color-background);
   color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+  letter-spacing: -0.01em;
 }
 
 /* Visible keyboard focus ring on every interactive element - accessibility requirement */
 :focus-visible {
   outline: 2px solid var(--color-sage-dark);
   outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgba(29, 29, 31, 0.12);
+}
+
+/* Smooth, gentle scroll when jumping to anchors (e.g. skip links) */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

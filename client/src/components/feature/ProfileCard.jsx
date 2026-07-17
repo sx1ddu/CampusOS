@@ -9,7 +9,7 @@ export function ProfileCard({ user, profile }) {
       <div className="flex items-center gap-4">
         <Avatar src={user?.avatar} name={user?.name} size={64} />
         <div>
-          <h2 className="font-heading text-lg font-bold text-text-primary">{user?.name}</h2>
+          <h2 className="font-heading text-xl font-semibold tracking-tight text-text-primary">{user?.name}</h2>
           <p className="text-sm text-text-secondary">{profile?.college}</p>
         </div>
       </div>

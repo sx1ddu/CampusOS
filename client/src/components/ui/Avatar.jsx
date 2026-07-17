@@ -9,15 +9,15 @@ export function Avatar({ src, name = '?', size = 40 }) {
         src={src}
         alt={name}
         style={{ width: size, height: size }}
-        className="rounded-full object-cover border border-border"
+        className="rounded-full border border-border object-cover"
       />
     )
   }
 
   return (
     <div
-      style={{ width: size, height: size }}
-      className="flex items-center justify-center rounded-full bg-sage/20 font-heading font-semibold text-sage-dark"
+      style={{ width: size, height: size, fontSize: Math.max(size * 0.4, 12) }}
+      className="flex items-center justify-center rounded-full bg-surface-alt font-heading font-semibold text-text-secondary"
     >
       {initial}
     </div>

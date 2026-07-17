@@ -47,8 +47,8 @@ export function CreateServicePage() {
   })
 
   return (
-    <div className="mx-auto max-w-xl px-6 py-12">
-      <h1 className="font-heading text-2xl font-bold text-text-primary">List a New Service</h1>
+    <div className="mx-auto max-w-xl px-6 py-16">
+      <h1 className="font-heading text-3xl font-semibold tracking-tight text-text-primary">List a New Service</h1>
       <form onSubmit={handleSubmit(mutation.mutate)} className="mt-6 space-y-4">
         <Input label="Title" {...register('title')} error={errors.title?.message} />
         <Textarea label="Description" {...register('description')} error={errors.description?.message} />

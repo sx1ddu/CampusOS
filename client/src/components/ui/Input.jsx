@@ -14,13 +14,13 @@ export const Input = forwardRef(function Input({ label, error, className = '', .
       <input
         id={inputId}
         ref={ref}
-        className={`w-full rounded-lg border bg-surface px-3.5 py-2.5 text-sm text-text-primary
-          placeholder:text-text-secondary/70
-          focus:outline-none focus:ring-2 focus:ring-sage/40
+        className={`w-full rounded-xl border bg-surface px-4 py-3 text-[15px] text-text-primary
+          placeholder:text-text-secondary/60 transition-shadow duration-150
+          focus:outline-none focus:ring-4 focus:ring-text-primary/[0.06] focus:border-text-primary/40
           ${error ? 'border-error' : 'border-border'} ${className}`}
         {...rest}
       />
-      {error && <p className="mt-1 text-xs text-error">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-error">{error}</p>}
     </div>
   )
 })

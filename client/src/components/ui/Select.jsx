@@ -17,8 +17,9 @@ export const Select = forwardRef(function Select({ label, error, options = [], c
         <select
           id={inputId}
           ref={ref}
-          className={`w-full appearance-none rounded-lg border bg-surface px-3.5 py-2.5 pr-9 text-sm text-text-primary
-            focus:outline-none focus:ring-2 focus:ring-sage/40
+          className={`w-full appearance-none rounded-xl border bg-surface px-4 py-3 pr-10 text-[15px] text-text-primary
+            transition-shadow duration-150
+            focus:outline-none focus:ring-4 focus:ring-text-primary/[0.06] focus:border-text-primary/40
             ${error ? 'border-error' : 'border-border'} ${className}`}
           {...rest}
         >
@@ -28,9 +29,9 @@ export const Select = forwardRef(function Select({ label, error, options = [], c
             </option>
           ))}
         </select>
-        <ChevronDown size={16} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+        <ChevronDown size={16} className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary" />
       </div>
-      {error && <p className="mt-1 text-xs text-error">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-error">{error}</p>}
     </div>
   )
 })

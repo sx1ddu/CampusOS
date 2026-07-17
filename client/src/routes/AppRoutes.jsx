@@ -79,10 +79,12 @@ export function AppRoutes() {
           </Route>
         </Route>
 
-        {/* Auth pages - centered card layout, no navbar/footer */}
+        {/* Login/Register use their own full-page split-screen layout */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        {/* Lighter-weight auth pages - centered card layout, no navbar/footer */}
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />

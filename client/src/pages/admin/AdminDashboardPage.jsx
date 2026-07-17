@@ -7,10 +7,10 @@ import { Card } from '../../components/ui/Card'
 // actions, so that's what's linked here - not inventing extra features.
 export function AdminDashboardPage() {
   return (
-    <div className="mx-auto max-w-2xl px-6 py-12">
+    <div className="mx-auto max-w-2xl px-6 py-16">
       <div className="flex items-center gap-2">
         <ShieldAlert className="text-sage-dark" size={22} />
-        <h1 className="font-heading text-xl font-bold text-text-primary">Admin Panel</h1>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Admin Panel</h1>
       </div>
 
       <Link to="/admin/reports" className="mt-6 block">

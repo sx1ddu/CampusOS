@@ -43,7 +43,7 @@ export function SettingsPage() {
 
   return (
     <div className="max-w-lg">
-      <h1 className="font-heading text-xl font-bold text-text-primary">Settings</h1>
+      <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Settings</h1>
 
       <Card className="mt-6">
         <h3 className="font-heading text-sm font-semibold text-text-primary">Profile picture</h3>

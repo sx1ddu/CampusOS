@@ -21,7 +21,7 @@ export function ResourceCard({ resource }) {
           <span className="text-xs text-text-secondary">{resource.owner?.name}</span>
         </div>
 
-        <div className="mt-3 border-t border-border pt-3 font-heading text-lg font-bold text-text-primary">
+        <div className="mt-3 border-t border-border pt-3 font-heading text-xl font-semibold tracking-tight text-text-primary">
           {formatCurrency(resource.rentPerDay)}
           <span className="text-sm font-normal text-text-secondary"> / day</span>
         </div>

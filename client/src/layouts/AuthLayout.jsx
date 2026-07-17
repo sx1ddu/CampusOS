@@ -1,16 +1,17 @@
 import { Link, Outlet } from 'react-router-dom'
-import logo from '../assets/logo.png'
+import { Logo } from '../components/ui/Logo'
 
-// Centered card layout used for Login, Register, Forgot/Reset Password,
-// and Verify Email - keeps all the auth pages visually consistent.
+// Centered card layout used for the lighter-weight auth screens -
+// Forgot/Reset Password and Verify Email. Login and Register use their
+// own full-page split-screen layout instead (see LoginPage/RegisterPage).
 export function AuthLayout() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-sm">
-        <Link to="/" className="mb-8 flex justify-center">
-          <img src={logo} alt="CampusOS" className="h-9 w-auto" />
+        <Link to="/" className="mb-10 flex justify-center text-text-primary">
+          <Logo size="lg" />
         </Link>
-        <div className="rounded-xl border border-border bg-surface p-8 shadow-sm">
+        <div className="rounded-2xl border border-border bg-surface p-8 shadow-[var(--shadow-card)]">
           <Outlet />
         </div>
       </div>

@@ -25,11 +25,11 @@ export function ViewProfilePage() {
   const reviews = reviewsData?.data?.data || []
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-12">
+    <div className="mx-auto max-w-2xl px-6 py-16">
       <ProfileCard user={profile?.user} profile={profile} />
 
       <div className="mt-8">
-        <h2 className="font-heading text-lg font-semibold text-text-primary">Reviews</h2>
+        <h2 className="font-heading text-xl font-semibold tracking-tight text-text-primary">Reviews</h2>
         <div className="mt-4 space-y-3">
           {reviews.length === 0 && <p className="text-sm text-text-secondary">No reviews yet.</p>}
           {reviews.map((review) => <ReviewCard key={review._id} review={review} />)}

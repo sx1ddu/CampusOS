@@ -78,14 +78,14 @@ export function ResourceDetailsPage() {
   const isOwner = user?._id === resource.owner?._id
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-12">
-      <div className="aspect-video overflow-hidden rounded-xl bg-surface-alt">
+    <div className="mx-auto max-w-4xl px-6 py-16">
+      <div className="aspect-video overflow-hidden rounded-2xl bg-surface-alt">
         {resource.images?.[0] && <img src={resource.images[0]} alt={resource.title} className="h-full w-full object-cover" />}
       </div>
 
       <div className="mt-6 flex items-start justify-between">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-text-primary">{resource.title}</h1>
+          <h1 className="font-heading text-3xl font-semibold tracking-tight text-text-primary">{resource.title}</h1>
           <div className="mt-2 flex items-center gap-3 text-sm text-text-secondary">
             <Avatar src={resource.owner?.avatar} name={resource.owner?.name} size={22} />
             {resource.owner?.name}
@@ -107,8 +107,8 @@ export function ResourceDetailsPage() {
         <p className="mt-2 text-sm text-text-secondary">Refundable deposit: {formatCurrency(resource.depositAmount)}</p>
       )}
 
-      <div className="mt-6 flex items-center justify-between rounded-xl border border-border bg-surface p-5">
-        <span className="font-heading text-2xl font-bold text-text-primary">
+      <div className="mt-6 flex items-center justify-between rounded-2xl border border-border bg-surface p-5">
+        <span className="font-heading text-3xl font-semibold tracking-tight text-text-primary">
           {formatCurrency(resource.rentPerDay)}
           <span className="text-sm font-normal text-text-secondary"> / day</span>
         </span>

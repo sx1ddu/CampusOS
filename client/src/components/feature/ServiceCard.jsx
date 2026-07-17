@@ -32,7 +32,7 @@ export function ServiceCard({ service }) {
           )}
         </div>
 
-        <div className="mt-3 border-t border-border pt-3 font-heading text-lg font-bold text-text-primary">
+        <div className="mt-3 border-t border-border pt-3 font-heading text-xl font-semibold tracking-tight text-text-primary">
           {formatCurrency(service.price)}
         </div>
       </Card>

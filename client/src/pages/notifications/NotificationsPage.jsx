@@ -32,7 +32,7 @@ export function NotificationsPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-heading text-xl font-bold text-text-primary">Notifications</h1>
+        <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Notifications</h1>
         {notifications.some((n) => !n.isRead) && (
           <Button size="sm" variant="outline" onClick={() => markAllReadMutation.mutate()}>
             Mark all as read

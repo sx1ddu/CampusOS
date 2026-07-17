@@ -30,8 +30,8 @@ export function BrowseServicesPage() {
   const totalPages = data?.data?.data?.totalPages || 1
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-12">
-      <h1 className="font-heading text-2xl font-bold text-text-primary">Browse Services</h1>
+    <div className="mx-auto max-w-6xl px-6 py-16">
+      <h1 className="font-heading text-3xl font-semibold tracking-tight text-text-primary">Browse Services</h1>
       <p className="mt-1 text-sm text-text-secondary">Find help from students on your campus.</p>
 
       <div className="mt-6">

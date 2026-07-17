@@ -16,7 +16,7 @@ function StatWidget({ icon: Icon, label, value }) {
         <Icon size={20} />
       </div>
       <div>
-        <p className="font-heading text-xl font-bold text-text-primary">{value}</p>
+        <p className="font-heading text-2xl font-semibold tracking-tight text-text-primary">{value}</p>
         <p className="text-xs text-text-secondary">{label}</p>
       </div>
     </Card>
@@ -35,7 +35,7 @@ export function DashboardOverviewPage() {
 
   return (
     <div>
-      <h1 className="font-heading text-xl font-bold text-text-primary">Welcome back, {user?.name?.split(' ')[0]}</h1>
+      <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Welcome back, {user?.name?.split(' ')[0]}</h1>
       <p className="mt-1 text-sm text-text-secondary">Here&apos;s what&apos;s happening with your CampusOS account.</p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -50,7 +50,7 @@ export function DashboardOverviewPage() {
           <h3 className="font-heading text-sm font-semibold text-text-primary">Your rating</h3>
           <div className="mt-3 flex items-center gap-2">
             <Star size={18} className="fill-warning text-warning" />
-            <span className="font-heading text-lg font-bold text-text-primary">{profile?.avgRating?.toFixed(1) || '0.0'}</span>
+            <span className="font-heading text-xl font-semibold tracking-tight text-text-primary">{profile?.avgRating?.toFixed(1) || '0.0'}</span>
             <span className="text-sm text-text-secondary">average across all reviews</span>
           </div>
         </Card>

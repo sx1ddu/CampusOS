@@ -24,14 +24,23 @@ export function Modal({ isOpen, onClose, title, children }) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/40 p-4">
-      <div role="dialog" aria-modal="true" aria-labelledby={titleId} className="w-full max-w-md rounded-xl bg-surface p-6 shadow-md">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 id={titleId} className="font-heading text-lg font-semibold text-text-primary">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/30 p-4 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="w-full max-w-md rounded-2xl border border-border bg-surface p-7 shadow-[var(--shadow-lifted)]"
+      >
+        <div className="mb-5 flex items-center justify-between">
+          <h3 id={titleId} className="font-heading text-xl font-semibold tracking-tight text-text-primary">
             {title}
           </h3>
-          <button onClick={onClose} className="text-text-secondary hover:text-text-primary" aria-label="Close">
-            <X size={20} />
+          <button
+            onClick={onClose}
+            className="rounded-full p-1 text-text-secondary transition-colors hover:bg-surface-alt hover:text-text-primary"
+            aria-label="Close"
+          >
+            <X size={18} />
           </button>
         </div>
         {children}
