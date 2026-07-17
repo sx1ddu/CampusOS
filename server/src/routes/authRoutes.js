@@ -3,6 +3,7 @@ import { body } from 'express-validator';
 import {
   register,
   verifyEmail,
+  resendVerification,
   login,
   googleLogin,
   refreshAccessToken,
@@ -29,6 +30,8 @@ router.post(
 );
 
 router.get('/verify-email/:token', verifyEmail);
+router.post('/resend-verification', body('email').isEmail(), validateRequest, resendVerification);
+
 
 router.post(
   '/login',

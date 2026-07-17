@@ -4,12 +4,22 @@ import { z } from 'zod'
 // (see the User/Service/Resource models) - validating on the frontend
 // first just gives faster feedback, the backend still double-checks.
 
-export const registerSchema = z.object({
-  name: z.string().min(2, 'Name is required'),
-  email: z.string().email('Enter a valid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-  college: z.string().min(2, 'College is required'),
-})
+export const registerSchema = z
+  .object({
+    name: z.string().min(2, 'Name is required'),
+    email: z.string().email('Enter a valid email'),
+    college: z.string().min(2, 'College is required'),
+    password: z
+      .string()
+      .min(6, 'Password must be at least 6 characters')
+      .regex(/[A-Z]/, 'Include at least one uppercase letter')
+      .regex(/[0-9]/, 'Include at least one number'),
+    confirmPassword: z.string().min(1, 'Please confirm your password'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
 
 export const loginSchema = z.object({
   email: z.string().email('Enter a valid email'),

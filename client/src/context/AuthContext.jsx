@@ -37,13 +37,19 @@ export function AuthProvider({ children }) {
     setUser(data.data.user)
   }
 
+  async function loginWithGoogle(idToken) {
+    const { data } = await authApi.googleLogin(idToken)
+    setAccessToken(data.data.accessToken)
+    setUser(data.data.user)
+  }
+
   async function logout() {
     await authApi.logout()
     setAccessToken(null)
     setUser(null)
   }
 
-  const value = { user, setUser, isLoading, login, logout }
+  const value = { user, setUser, isLoading, login, loginWithGoogle, logout }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

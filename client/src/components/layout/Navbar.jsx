@@ -5,8 +5,10 @@ import { useAuth } from '../../hooks/useAuth'
 import { Avatar } from '../ui/Avatar'
 import { Button } from '../ui/Button'
 import { Logo } from '../ui/Logo'
+import { ConfirmDialog } from '../ui/ConfirmDialog'
 
 const navLinks = [
+  { to: '/', label: 'Home', end: true },
   { to: '/services', label: 'Services' },
   { to: '/resources', label: 'Resources' },
   { to: '/about', label: 'About' },
@@ -19,6 +21,8 @@ export function Navbar() {
   const { user, logout } = useAuth()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [logoutOpen, setLogoutOpen] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -30,10 +34,16 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  async function handleLogout() {
-    await logout()
-    setMobileOpen(false)
-    navigate('/')
+  async function handleConfirmLogout() {
+    setIsLoggingOut(true)
+    try {
+      await logout()
+      setLogoutOpen(false)
+      setMobileOpen(false)
+      navigate('/')
+    } finally {
+      setIsLoggingOut(false)
+    }
   }
 
   return (
@@ -47,19 +57,30 @@ export function Navbar() {
           <Logo />
         </Link>
 
-        {/* Desktop links */}
+        {/* Desktop links - each gets a thin white underline that grows in
+            from the center on hover/active, Apple-nav style. */}
         <div className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
+              end={link.end}
               className={({ isActive }) =>
-                `text-[13px] font-medium tracking-wide transition-colors hover:text-white ${
+                `group relative py-1 text-[13px] font-medium tracking-wide transition-colors hover:text-white ${
                   isActive ? 'text-white' : 'text-white/70'
                 }`
               }
             >
-              {link.label}
+              {({ isActive }) => (
+                <>
+                  {link.label}
+                  <span
+                    className={`absolute -bottom-0.5 left-1/2 h-px -translate-x-1/2 bg-white transition-all duration-300 ease-out ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  />
+                </>
+              )}
             </NavLink>
           ))}
         </div>
@@ -77,7 +98,7 @@ export function Navbar() {
               <Link to="/dashboard" className="flex items-center gap-2" aria-label="Dashboard">
                 <Avatar src={user.avatar} name={user.name} size={30} />
               </Link>
-              <Button variant="outline" size="sm" onClick={handleLogout} className="border-white/25 bg-transparent text-white hover:bg-white/10">
+              <Button variant="outline" size="sm" onClick={() => setLogoutOpen(true)} className="border-white/25 bg-transparent text-white hover:bg-white/10">
                 Logout
               </Button>
             </>
@@ -124,6 +145,7 @@ export function Navbar() {
               <NavLink
                 key={link.to}
                 to={link.to}
+                end={link.end}
                 onClick={() => setMobileOpen(false)}
                 className="text-sm font-medium text-white/85"
               >
@@ -135,7 +157,7 @@ export function Navbar() {
                 <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-white/85">
                   Dashboard
                 </Link>
-                <Button variant="outline" size="sm" onClick={handleLogout} className="w-full border-white/25 bg-transparent text-white hover:bg-white/10">
+                <Button variant="outline" size="sm" onClick={() => setLogoutOpen(true)} className="w-full border-white/25 bg-transparent text-white hover:bg-white/10">
                   Logout
                 </Button>
               </>
@@ -156,6 +178,15 @@ export function Navbar() {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+        onConfirm={handleConfirmLogout}
+        title="Log out"
+        message={`Are you sure you want to logout from ${user?.name ? `${user.name}'s` : 'your'} account?`}
+        isLoading={isLoggingOut}
+      />
     </header>
   )
 }

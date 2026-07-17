@@ -78,6 +78,34 @@ export const register = asyncHandler(async (req, res) => {
     .json(new ApiResponse(HTTP_STATUS.CREATED, 'Registered! Please check your email to verify your account.'));
 });
 
+// @desc    Resend the verification email (e.g. the first one expired or was lost)
+// @route   POST /api/auth/resend-verification
+export const resendVerification = asyncHandler(async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  // Same "don't reveal if the email exists" approach as forgotPassword.
+  if (!user || user.isEmailVerified) {
+    return res
+      .status(HTTP_STATUS.OK)
+      .json(new ApiResponse(HTTP_STATUS.OK, 'If that account needs verifying, a new email has been sent'));
+  }
+
+  const verificationToken = user.generateEmailVerificationToken();
+  await user.save({ validateBeforeSave: false });
+
+  const verifyUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
+  await sendEmail({
+    to: user.email,
+    subject: 'Verify your CampusOS account',
+    html: `<p>Hi ${user.name}, click below to verify your email:</p>
+           <a href="${verifyUrl}">${verifyUrl}</a>`,
+  });
+
+  res
+    .status(HTTP_STATUS.OK)
+    .json(new ApiResponse(HTTP_STATUS.OK, 'If that account needs verifying, a new email has been sent'));
+});
+
 // @desc    Verify email using the token sent to the user's inbox
 // @route   GET /api/auth/verify-email/:token
 export const verifyEmail = asyncHandler(async (req, res) => {

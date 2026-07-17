@@ -16,6 +16,7 @@ const RegisterPage = lazyImport(() => import('../pages/auth/RegisterPage'), 'Reg
 const ForgotPasswordPage = lazyImport(() => import('../pages/auth/ForgotPasswordPage'), 'ForgotPasswordPage')
 const ResetPasswordPage = lazyImport(() => import('../pages/auth/ResetPasswordPage'), 'ResetPasswordPage')
 const VerifyEmailPage = lazyImport(() => import('../pages/auth/VerifyEmailPage'), 'VerifyEmailPage')
+const CheckEmailPage = lazyImport(() => import('../pages/auth/CheckEmailPage'), 'CheckEmailPage')
 
 const BrowseServicesPage = lazyImport(() => import('../pages/services/BrowseServicesPage'), 'BrowseServicesPage')
 const ServiceDetailsPage = lazyImport(() => import('../pages/services/ServiceDetailsPage'), 'ServiceDetailsPage')
@@ -88,6 +89,7 @@ export function AppRoutes() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
           <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+          <Route path="/check-email" element={<CheckEmailPage />} />
         </Route>
 
         {/* Dashboard - sidebar layout, all routes require login */}
