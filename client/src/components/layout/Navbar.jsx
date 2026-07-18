@@ -139,7 +139,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-white/10 bg-charcoal px-6 py-5 md:hidden">
+        <div className="animate-[slideDown_0.2s_ease-out] border-t border-white/10 bg-charcoal px-6 py-5 md:hidden">
           <div className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <NavLink

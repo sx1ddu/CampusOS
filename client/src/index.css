@@ -61,6 +61,55 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(29, 29, 31, 0.12);
 }
 
+/* A gentle fade + rise used for page content on route change, and for
+   cards/panels that should feel like they're settling into place
+   instead of just popping in. */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Plain fade, used for overlays (modal backdrop) where movement isn't wanted. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal content itself grows in slightly alongside the backdrop fade -
+   subtle, not bouncy. */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile nav menu and dropdown-style panels drop down into place. */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Smooth, gentle scroll when jumping to anchors (e.g. skip links) */
 html {
   scroll-behavior: smooth;

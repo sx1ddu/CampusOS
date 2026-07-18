@@ -58,6 +58,9 @@ export const profileSchema = z.object({
   college: z.string().optional(),
   department: z.string().optional(),
   year: z.coerce.number().min(1).max(5).optional(),
+  // Comma-separated in the form (e.g. "React, Figma, Excel"), split into
+  // an array before it's sent to the API - see ProfileSetupPage.
+  skillsInput: z.string().optional(),
 })
 
 export const reviewSchema = z.object({

@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react'
 // shares the same padding, radius, and hover behavior automatically.
 // variant controls color, size controls padding.
 const variantStyles = {
-  primary: 'bg-charcoal text-white hover:bg-charcoal-dark active:scale-[0.98]',
+  primary: 'bg-charcoal text-white hover:bg-charcoal-dark hover:shadow-[var(--shadow-card)] active:scale-[0.98]',
   outline: 'border border-border bg-surface text-text-primary hover:border-text-secondary/40 hover:bg-surface-alt active:scale-[0.98]',
   ghost: 'bg-transparent text-text-primary hover:bg-surface-alt active:scale-[0.98]',
   danger: 'bg-error text-white hover:bg-error/90 active:scale-[0.98]',
@@ -28,6 +28,7 @@ export function Button({
     <button
       className={`inline-flex items-center justify-center gap-2 rounded-full font-medium
         transition-all duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-charcoal/30 focus-visible:ring-offset-2
         ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       disabled={isLoading || rest.disabled}
       {...rest}

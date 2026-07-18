@@ -9,6 +9,7 @@ import { Skeleton } from '../../components/ui/Skeleton'
 import { reportApi } from '../../api/reportApi'
 import { formatDate } from '../../utils/formatDate'
 import { REPORT_STATUS } from '../../constants/enums'
+import { AdminTabs } from '../../components/layout/AdminTabs'
 
 export function AdminReportsPage() {
   const queryClient = useQueryClient()
@@ -30,7 +31,9 @@ export function AdminReportsPage() {
   const reports = data?.data?.data || []
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <>
+      <AdminTabs />
+      <div className="mx-auto max-w-3xl px-6 py-16">
       <h1 className="font-heading text-2xl font-semibold tracking-tight text-text-primary">Reports</h1>
 
       <div className="mt-6 space-y-3">
@@ -61,5 +64,6 @@ export function AdminReportsPage() {
         ))}
       </div>
     </div>
+    </>
   )
 }

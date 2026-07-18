@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { Navbar } from '../components/layout/Navbar'
 import { Footer } from '../components/layout/Footer'
+import { PageTransition } from '../components/layout/PageTransition'
 
 // Used for all public pages (landing, about, browse services/resources).
 // Every page rendered through this layout automatically gets the same
@@ -10,7 +11,9 @@ export function MainLayout() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </main>
       <Footer />
     </div>

@@ -8,6 +8,7 @@ import { GoogleButton } from '../../components/ui/GoogleButton'
 import { PasswordStrength } from '../../components/ui/PasswordStrength'
 import { AuthSplitLayout } from '../../layouts/AuthSplitLayout'
 import { authApi } from '../../api/authApi'
+import { userApi } from '../../api/userApi'
 import { useAuth } from '../../hooks/useAuth'
 import { registerSchema } from '../../utils/validators'
 
@@ -37,10 +38,16 @@ export function RegisterPage() {
   async function handleGoogleSuccess(idToken) {
     try {
       // Google sign-up skips email verification entirely (Google already
-      // verified the address), so this goes straight into the app.
+      // verified the address), so this goes straight into the app - new
+      // accounts land on profile setup, returning ones go to the dashboard.
       await loginWithGoogle(idToken)
       toast.success('Account created!')
-      navigate('/dashboard')
+      try {
+        const { data } = await userApi.getMyProfile()
+        navigate(data.data.isProfileComplete ? '/dashboard' : '/profile-setup')
+      } catch {
+        navigate('/dashboard')
+      }
     } catch {
       toast.error('Could not sign up with Google. Please try again.')
     }

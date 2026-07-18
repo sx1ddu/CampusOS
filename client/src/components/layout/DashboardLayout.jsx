@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { Navbar } from './Navbar'
 import { Sidebar, dashboardLinks } from './Sidebar'
+import { PageTransition } from './PageTransition'
 
 // The full Sidebar is hidden below md, so this horizontal, scrollable
 // strip is the only way to reach dashboard sub-pages on mobile.
@@ -33,7 +34,9 @@ export function DashboardLayout() {
       <div className="mx-auto flex w-full max-w-7xl flex-1">
         <Sidebar />
         <main className="min-w-0 flex-1 px-6 py-10 sm:px-10">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </main>
       </div>
     </div>

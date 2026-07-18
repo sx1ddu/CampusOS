@@ -1,5 +1,6 @@
 import { Link, Outlet } from 'react-router-dom'
 import { Logo } from '../components/ui/Logo'
+import { PageTransition } from '../components/layout/PageTransition'
 
 // Centered card layout used for the lighter-weight auth screens -
 // Forgot/Reset Password and Verify Email. Login and Register use their
@@ -12,7 +13,9 @@ export function AuthLayout() {
           <Logo size="lg" />
         </Link>
         <div className="rounded-2xl border border-border bg-surface p-8 shadow-[var(--shadow-card)]">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </div>
       </div>
     </div>

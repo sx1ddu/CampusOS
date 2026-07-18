@@ -35,12 +35,19 @@ export function EditProfilePage() {
         college: profile.college,
         department: profile.department,
         year: profile.year,
+        skillsInput: (profile.skills || []).join(', '),
       })
     }
   }, [data, reset])
 
   const mutation = useMutation({
-    mutationFn: (values) => userApi.updateMyProfile(values),
+    mutationFn: ({ skillsInput, ...values }) =>
+      userApi.updateMyProfile({
+        ...values,
+        skills: skillsInput
+          ? skillsInput.split(',').map((s) => s.trim()).filter(Boolean)
+          : [],
+      }),
     onSuccess: () => {
       toast.success('Profile updated!')
       queryClient.invalidateQueries({ queryKey: ['myProfile'] })
@@ -59,6 +66,12 @@ export function EditProfilePage() {
         <Input label="College" {...register('college')} error={errors.college?.message} />
         <Input label="Department" {...register('department')} error={errors.department?.message} />
         <Input label="Year" type="number" {...register('year')} error={errors.year?.message} />
+        <Input
+          label="Skills"
+          placeholder="React, Figma, Excel"
+          {...register('skillsInput')}
+          error={errors.skillsInput?.message}
+        />
         <Button type="submit" className="w-full" isLoading={mutation.isPending}>
           Save Changes
         </Button>

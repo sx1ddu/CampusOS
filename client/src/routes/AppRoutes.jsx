@@ -38,9 +38,12 @@ const SettingsPage = lazyImport(() => import('../pages/settings/SettingsPage'), 
 
 const ViewProfilePage = lazyImport(() => import('../pages/profile/ViewProfilePage'), 'ViewProfilePage')
 const EditProfilePage = lazyImport(() => import('../pages/profile/EditProfilePage'), 'EditProfilePage')
+const ProfileSetupPage = lazyImport(() => import('../pages/profile/ProfileSetupPage'), 'ProfileSetupPage')
 
 const AdminDashboardPage = lazyImport(() => import('../pages/admin/AdminDashboardPage'), 'AdminDashboardPage')
 const AdminReportsPage = lazyImport(() => import('../pages/admin/AdminReportsPage'), 'AdminReportsPage')
+const AdminUsersPage = lazyImport(() => import('../pages/admin/AdminUsersPage'), 'AdminUsersPage')
+const AdminCategoriesPage = lazyImport(() => import('../pages/admin/AdminCategoriesPage'), 'AdminCategoriesPage')
 
 // Shown briefly while a lazy-loaded page's code is being fetched.
 function PageFallback() {
@@ -102,6 +105,7 @@ export function AppRoutes() {
             <Route path="/dashboard/favorites" element={<FavoritesPage />} />
             <Route path="/dashboard/notifications" element={<NotificationsPage />} />
             <Route path="/dashboard/settings" element={<SettingsPage />} />
+            <Route path="/profile-setup" element={<ProfileSetupPage />} />
           </Route>
         </Route>
 
@@ -109,6 +113,8 @@ export function AppRoutes() {
         <Route element={<ProtectedRoute requireAdmin />}>
           <Route element={<DashboardLayout />}>
             <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/categories" element={<AdminCategoriesPage />} />
             <Route path="/admin/reports" element={<AdminReportsPage />} />
           </Route>
         </Route>

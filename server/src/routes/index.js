@@ -11,6 +11,7 @@ import favoriteRoutes from './favoriteRoutes.js';
 import reportRoutes from './reportRoutes.js';
 import notificationRoutes from './notificationRoutes.js';
 import paymentRoutes from './paymentRoutes.js';
+import adminRoutes from './adminRoutes.js';
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use('/favorites', favoriteRoutes);
 router.use('/reports', reportRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/payments', paymentRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

@@ -7,7 +7,20 @@ import { Button } from '../../components/ui/Button'
 import { GoogleButton } from '../../components/ui/GoogleButton'
 import { AuthSplitLayout } from '../../layouts/AuthSplitLayout'
 import { useAuth } from '../../hooks/useAuth'
+import { userApi } from '../../api/userApi'
 import { loginSchema } from '../../utils/validators'
+
+// After logging in, students with an incomplete profile (no bio/college/
+// skills yet - see the isProfileComplete virtual on the Profile model)
+// land on the setup screen once instead of straight on the dashboard.
+async function redirectAfterLogin(navigate) {
+  try {
+    const { data } = await userApi.getMyProfile()
+    navigate(data.data.isProfileComplete ? '/dashboard' : '/profile-setup')
+  } catch {
+    navigate('/dashboard')
+  }
+}
 
 export function LoginPage() {
   const { login, loginWithGoogle } = useAuth()
@@ -22,7 +35,7 @@ export function LoginPage() {
     try {
       await login(values.email, values.password)
       toast.success('Welcome back!')
-      navigate('/dashboard')
+      await redirectAfterLogin(navigate)
     } catch (error) {
       toast.error(error.response?.data?.message || 'Invalid email or password')
     }
@@ -32,7 +45,7 @@ export function LoginPage() {
     try {
       await loginWithGoogle(idToken)
       toast.success('Welcome back!')
-      navigate('/dashboard')
+      await redirectAfterLogin(navigate)
     } catch {
       toast.error('Could not sign in with Google. Please try again.')
     }
