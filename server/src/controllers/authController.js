@@ -65,17 +65,22 @@ export const register = asyncHandler(async (req, res) => {
   const verificationToken = user.generateEmailVerificationToken();
   await user.save({ validateBeforeSave: false });
 
+  // Respond right away - the user is already created, so the frontend
+  // shouldn't have to wait on an SMTP server to hear back. If the email
+  // send is slow or fails, sendEmail logs it, but it never blocks this
+  // response (this used to be "await sendEmail(...)" before res.json,
+  // which meant a slow/unreachable mail server hung the whole request).
+  res
+    .status(HTTP_STATUS.CREATED)
+    .json(new ApiResponse(HTTP_STATUS.CREATED, 'Registered! Please check your email to verify your account.'));
+
   const verifyUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
-  await sendEmail({
+  sendEmail({
     to: user.email,
     subject: 'Verify your CampusOS account',
     html: `<p>Hi ${user.name}, click below to verify your email:</p>
            <a href="${verifyUrl}">${verifyUrl}</a>`,
-  });
-
-  res
-    .status(HTTP_STATUS.CREATED)
-    .json(new ApiResponse(HTTP_STATUS.CREATED, 'Registered! Please check your email to verify your account.'));
+  }).catch((err) => console.error('Failed to send verification email:', err.message));
 });
 
 // @desc    Resend the verification email (e.g. the first one expired or was lost)
@@ -93,17 +98,17 @@ export const resendVerification = asyncHandler(async (req, res) => {
   const verificationToken = user.generateEmailVerificationToken();
   await user.save({ validateBeforeSave: false });
 
+  res
+    .status(HTTP_STATUS.OK)
+    .json(new ApiResponse(HTTP_STATUS.OK, 'If that account needs verifying, a new email has been sent'));
+
   const verifyUrl = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
-  await sendEmail({
+  sendEmail({
     to: user.email,
     subject: 'Verify your CampusOS account',
     html: `<p>Hi ${user.name}, click below to verify your email:</p>
            <a href="${verifyUrl}">${verifyUrl}</a>`,
-  });
-
-  res
-    .status(HTTP_STATUS.OK)
-    .json(new ApiResponse(HTTP_STATUS.OK, 'If that account needs verifying, a new email has been sent'));
+  }).catch((err) => console.error('Failed to send verification email:', err.message));
 });
 
 // @desc    Verify email using the token sent to the user's inbox
@@ -221,15 +226,15 @@ export const forgotPassword = asyncHandler(async (req, res) => {
   const resetToken = user.generatePasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
+  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'If that email exists, a reset link has been sent'));
+
   const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-  await sendEmail({
+  sendEmail({
     to: user.email,
     subject: 'Reset your CampusOS password',
     html: `<p>Click below to reset your password (valid for 1 hour):</p>
            <a href="${resetUrl}">${resetUrl}</a>`,
-  });
-
-  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, 'If that email exists, a reset link has been sent'));
+  }).catch((err) => console.error('Failed to send password reset email:', err.message));
 });
 
 // @desc    Reset password using the token from the email

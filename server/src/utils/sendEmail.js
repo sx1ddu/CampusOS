@@ -9,6 +9,8 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  connectionTimeout: 10000, // fail fast instead of hanging if SMTP is unreachable
+  socketTimeout: 10000,
 });
 
 // Send a simple HTML email through Nodemailer.
